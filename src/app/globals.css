@@ -1,26 +1,266 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f1ea;
+  --foreground: #122033;
+  --surface: #ffffff;
+  --surface-strong: #ebe4d6;
+  --brand: #0f766e;
+  --brand-strong: #115e59;
+  --muted: #64748b;
+  --accent: #c88a3d;
+  --ink-soft: #334155;
+  --line: rgba(15, 23, 42, 0.09);
+  --line-strong: rgba(15, 23, 42, 0.16);
+  --sidebar: #10263b;
+  --sidebar-strong: #0b1d2d;
+  --sidebar-line: rgba(255, 255, 255, 0.08);
+  --success: #0f766e;
+  --danger: #b91c1c;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --font-sans: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand) 20%, white);
+  color: var(--foreground);
+}
+
+a,
+button {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.app-backdrop {
+  background:
+    radial-gradient(circle at top left, rgba(200, 138, 61, 0.18), transparent 24%),
+    radial-gradient(circle at 82% 12%, rgba(15, 118, 110, 0.16), transparent 20%),
+    radial-gradient(circle at bottom right, rgba(18, 32, 51, 0.08), transparent 26%),
+    linear-gradient(145deg, #faf7f2 0%, #f3eee5 48%, #f7f3eb 100%);
+}
+
+.panel {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 90%, white);
+  box-shadow: 0 30px 90px -58px rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.panel-soft {
+  border: 1px solid color-mix(in srgb, var(--line) 70%, white);
+  background: color-mix(in srgb, var(--surface) 82%, #f8f6f0);
+}
+
+.mesh-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9)),
+    radial-gradient(circle at top right, rgba(200, 138, 61, 0.1), transparent 34%);
+}
+
+.app-shell-grid {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .app-shell-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sidebar-panel {
+  border: 1px solid var(--sidebar-line);
+  background:
+    radial-gradient(circle at top, rgba(15, 118, 110, 0.22), transparent 32%),
+    linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-strong) 100%);
+  box-shadow: 0 34px 90px -58px rgba(15, 23, 42, 0.9);
+}
+
+.field-input {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+  color: var(--foreground);
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.field-input:focus {
+  border-color: color-mix(in srgb, var(--brand) 48%, white);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 14%, white);
+}
+
+.field-label {
+  margin-bottom: 0.55rem;
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #19303d;
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background: var(--brand);
+  padding: 0.85rem 1.15rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 24px 55px -34px rgba(15, 118, 110, 0.88);
+}
+
+.primary-button:hover {
+  background: var(--brand-strong);
+  transform: translateY(-1px);
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.85rem 1.15rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1f3347;
+}
+
+.secondary-button:hover {
+  border-color: rgba(148, 163, 184, 0.9);
+  background: rgba(255, 255, 255, 1);
+}
+
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  background: rgba(254, 242, 242, 0.98);
+  padding: 0.72rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+.danger-button:hover {
+  background: rgba(254, 226, 226, 1);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.status-pill-valid {
+  background: rgba(15, 118, 110, 0.1);
+  color: var(--success);
+}
+
+.status-pill-expired {
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--danger);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.data-table thead th {
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 0.95rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.data-table tbody td {
+  border-bottom: 1px solid rgba(241, 245, 249, 0.95);
+  padding: 1rem;
+  vertical-align: top;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.surface-muted {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(255, 255, 255, 0.92));
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.35) 25%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.35) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s linear infinite;
 }
