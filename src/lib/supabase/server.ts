@@ -18,6 +18,7 @@ function getSupabaseServerKey() {
 }
 
 // Module-level singleton — one client for the lifetime of the server process
+// This is critical for Vercel serverless to avoid connection churn
 let _client: ReturnType<typeof createClient<Database>> | null = null;
 
 export function getSupabaseAdminClient() {
@@ -27,6 +28,15 @@ export function getSupabaseAdminClient() {
       autoRefreshToken: false,
       persistSession: false,
     },
+    db: {
+      // Use connection pooling for serverless environments
+      schema: "public",
+    },
   });
   return _client;
+}
+
+// Reset client (useful for testing or error recovery)
+export function resetSupabaseClient() {
+  _client = null;
 }
