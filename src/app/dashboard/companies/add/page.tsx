@@ -145,7 +145,7 @@ export default async function AddCompanyPage(props: {
               />
             </div>
 
-            <button type="submit" className="primary-button w-full">
+            <button type="submit" className="primary-button w-full cursor-pointer">
               Save Company
             </button>
           </form>

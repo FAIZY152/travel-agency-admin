@@ -143,7 +143,7 @@ export function AddCustomerForm({ companies }: { companies: Company[] }) {
       <button
         type="submit"
         disabled={companies.length === 0 || uploading}
-        className="primary-button w-full disabled:cursor-not-allowed disabled:opacity-60"
+        className="primary-button w-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
       >
         {uploading ? "Uploading image..." : "Save Customer"}
       </button>

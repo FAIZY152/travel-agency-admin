@@ -57,9 +57,11 @@ export default function Home() {
         :root {
           --gold: #c8883d;
           --gold-light: #e8c07a;
-          --deep: #0b1a26;
-          --navy: #10263b;
+          --deep: #ffffff;
+          --navy: #f8f5f0;
           --cream: #faf6ef;
+          --text: #2d3748;
+          --text-light: #4a5568;
         }
 
         html, body {
@@ -73,7 +75,7 @@ export default function Home() {
         .scene {
           position: fixed;
           inset: 0;
-          background: linear-gradient(160deg, #0a1520 0%, #0f2035 40%, #0b1a26 100%);
+          background: linear-gradient(160deg, #ffffff 0%, #faf8f5 40%, #f5f0e8 100%);
           overflow: hidden;
         }
 
@@ -81,8 +83,8 @@ export default function Home() {
           position: absolute;
           inset: 0;
           background: radial-gradient(ellipse 80% 60% at 50% 0%,
-            rgba(200,138,61,0.18) 0%,
-            rgba(16,38,59,0.4) 50%,
+            rgba(200,138,61,0.08) 0%,
+            rgba(250,248,245,0.5) 50%,
             transparent 100%);
         }
 
@@ -107,13 +109,13 @@ export default function Home() {
           right: 12%;
           width: 70px;
           height: 70px;
-          filter: drop-shadow(0 0 30px rgba(200,138,61,0.5));
+          filter: drop-shadow(0 0 30px rgba(200,138,61,0.3));
           animation: moonGlow 4s ease-in-out infinite;
         }
 
         @keyframes moonGlow {
-          0%, 100% { filter: drop-shadow(0 0 20px rgba(200,138,61,0.4)); }
-          50% { filter: drop-shadow(0 0 45px rgba(200,138,61,0.7)); }
+          0%, 100% { filter: drop-shadow(0 0 20px rgba(200,138,61,0.2)); }
+          50% { filter: drop-shadow(0 0 45px rgba(200,138,61,0.4)); }
         }
 
         .horizon {
@@ -121,7 +123,7 @@ export default function Home() {
           bottom: 35%;
           left: 0; right: 0;
           height: 120px;
-          background: linear-gradient(to top, rgba(200,138,61,0.12) 0%, transparent 100%);
+          background: linear-gradient(to top, rgba(200,138,61,0.06) 0%, transparent 100%);
         }
 
         .dunes { position: absolute; bottom: 0; left: 0; right: 0; height: 40%; }
@@ -129,28 +131,32 @@ export default function Home() {
         .dune-back {
           position: absolute;
           bottom: 0; left: 0; right: 0; height: 100%;
-          background: #0a1520;
+          background: linear-gradient(to top, #e8e0d5 0%, transparent 100%);
           clip-path: polygon(0% 100%, 0% 60%, 8% 48%, 18% 38%, 30% 28%, 42% 22%, 52% 26%, 62% 18%, 72% 24%, 82% 30%, 90% 36%, 100% 30%, 100% 100%);
+          opacity: 0.5;
         }
 
         .dune-mid {
           position: absolute;
           bottom: 0; left: 0; right: 0; height: 80%;
-          background: linear-gradient(to bottom, #0d1e2e, #0a1520);
+          background: linear-gradient(to bottom, #f0ebe2, #e5ded3);
           clip-path: polygon(0% 100%, 0% 80%, 12% 60%, 25% 45%, 38% 52%, 50% 35%, 62% 48%, 75% 38%, 88% 50%, 100% 42%, 100% 100%);
+          opacity: 0.6;
         }
 
         .dune-front {
           position: absolute;
           bottom: 0; left: 0; right: 0; height: 60%;
-          background: linear-gradient(to bottom, #0f2035 0%, #0b1820 100%);
+          background: linear-gradient(to bottom, #f5efe6 0%, #ebe4d6 100%);
           clip-path: polygon(0% 100%, 0% 90%, 15% 72%, 28% 80%, 42% 65%, 55% 75%, 68% 60%, 80% 70%, 92% 62%, 100% 68%, 100% 100%);
+          opacity: 0.8;
         }
 
         .palm {
           position: absolute;
           bottom: 34%;
-          filter: drop-shadow(0 0 8px rgba(200,138,61,0.15));
+          filter: drop-shadow(0 0 8px rgba(200,138,61,0.1));
+          opacity: 0.4;
         }
         .palm-l { left: 5%; }
         .palm-r { right: 7%; transform: scaleX(-1); }
@@ -160,8 +166,8 @@ export default function Home() {
           bottom: 34%;
           left: 50%;
           transform: translateX(-50%);
-          filter: drop-shadow(0 0 20px rgba(200,138,61,0.2));
-          opacity: 0.35;
+          filter: drop-shadow(0 0 20px rgba(200,138,61,0.1));
+          opacity: 0.2;
         }
 
         .divider-line {
@@ -197,11 +203,11 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          border: 1px solid rgba(200,138,61,0.4);
-          background: rgba(200,138,61,0.08);
+          border: 1px solid rgba(200,138,61,0.5);
+          background: rgba(200,138,61,0.06);
           padding: 7px 20px;
           border-radius: 100px;
-          color: #e8c07a;
+          color: #c8883d;
           font-family: 'Cinzel', serif;
           font-size: 9px;
           letter-spacing: 0.38em;
@@ -222,10 +228,10 @@ export default function Home() {
 
         .logo-sub {
           font-family: 'Raleway', sans-serif;
-          font-weight: 200;
+          font-weight: 300;
           font-size: 13px;
           letter-spacing: 0.55em;
-          color: rgba(200,138,61,0.7);
+          color: rgba(200,138,61,0.8);
           text-transform: uppercase;
           margin-bottom: 10px;
         }
@@ -234,19 +240,19 @@ export default function Home() {
           font-family: 'Cinzel', serif;
           font-weight: 700;
           font-size: clamp(38px, 7vw, 88px);
-          color: #fff;
+          color: #1a202c;
           line-height: 1;
           letter-spacing: 0.04em;
-          text-shadow: 0 0 60px rgba(200,138,61,0.3), 0 2px 4px rgba(0,0,0,0.5);
+          text-shadow: none;
         }
-        .logo-gold { color: #e8c07a; }
+        .logo-gold { color: #c8883d; }
 
         .logo-amp {
           font-family: 'Cormorant Garamond', serif;
           font-style: italic;
           font-weight: 300;
           font-size: 0.7em;
-          color: rgba(232,192,122,0.6);
+          color: rgba(200,136,61,0.7);
           display: block;
           margin: 6px 0;
           letter-spacing: 0.1em;
@@ -255,7 +261,7 @@ export default function Home() {
         .logo-agency {
           font-family: 'Cinzel', serif;
           font-size: clamp(14px, 2vw, 22px);
-          color: rgba(200,138,61,0.7);
+          color: rgba(200,138,61,0.8);
           letter-spacing: 0.32em;
           font-weight: 400;
           text-transform: uppercase;
@@ -273,7 +279,7 @@ export default function Home() {
           font-style: italic;
           font-weight: 300;
           font-size: clamp(18px, 2.5vw, 26px);
-          color: rgba(255,255,255,0.65);
+          color: rgba(45,55,72,0.7);
           letter-spacing: 0.06em;
         }
 
@@ -315,8 +321,11 @@ export default function Home() {
           gap: 14px;
           padding: 18px 48px;
           background: transparent;
-          border: 1px solid rgba(200,138,61,0.6);
-          color: #e8c07a;
+          border: 1px solid #c8883d;
+          background-color: #c8883d;
+          color: white;
+          border-radius:4px;
+          font-weight: 900;
           font-family: 'Cinzel', serif;
           font-size: 11px;
           letter-spacing: 0.38em;
@@ -330,15 +339,15 @@ export default function Home() {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, rgba(200,138,61,0.15), rgba(200,138,61,0.05));
+          background: linear-gradient(135deg, rgba(200,138,61,0.2), rgba(200,138,61,0.08));
           transform: translateX(-100%);
           transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
         }
         .login-btn:hover::before { transform: translateX(0); }
         .login-btn:hover {
-          color: #fff;
-          border-color: rgba(200,138,61,0.9);
-          box-shadow: 0 0 40px rgba(200,138,61,0.2), inset 0 0 30px rgba(200,138,61,0.08);
+          color: #1a202c;
+          border-color: #c8883d;
+          box-shadow: 0 0 40px rgba(200,138,61,0.15);
         }
         .login-btn:hover .btn-arrow { width: 32px; }
 
@@ -382,7 +391,7 @@ export default function Home() {
           font-weight: 300;
           font-size: 9px;
           letter-spacing: 0.3em;
-          color: rgba(200,138,61,0.35);
+          color: rgba(200,138,61,0.5);
           text-transform: uppercase;
         }
 
@@ -500,7 +509,7 @@ export default function Home() {
           </div>
 
           <div className="btn-wrap">
-            <Link href="/login" className="login-btn">
+            <Link href="/login" className="login-btn cursor-pointer">
               Admin Login
               <span className="btn-arrow" />
             </Link>
