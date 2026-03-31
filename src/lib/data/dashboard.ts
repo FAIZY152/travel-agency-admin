@@ -5,8 +5,6 @@ import { getSupabaseAdminClient } from "@/lib/supabase/server";
 type DashboardStats = {
   companiesCount: number;
   customersCount: number;
-  validDocumentsCount: number;
-  expiredDocumentsCount: number;
   recentCompanies: Array<{ id: string; name: string; createdAt: string }>;
   recentCustomers: Array<{
     id: string;
@@ -20,11 +18,7 @@ type DashboardStats = {
 async function fetchDashboardStats(): Promise<DashboardStats> {
   try {
     const supabase = getSupabaseAdminClient();
-    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "UTC" }).format(
-      new Date(),
-    );
 
-    // 2 queries instead of 6 — compute counts from the fetched rows in JS
     const [companiesResult, customersResult] = await Promise.all([
       supabase
         .from("companies")
@@ -32,7 +26,7 @@ async function fetchDashboardStats(): Promise<DashboardStats> {
         .order("created_at", { ascending: false }),
       supabase
         .from("customers")
-        .select("id, name, company_id, expiry_date, created_at")
+        .select("id, name, company_id, created_at")
         .order("created_at", { ascending: false }),
     ]);
 
@@ -40,8 +34,6 @@ async function fetchDashboardStats(): Promise<DashboardStats> {
       return {
         companiesCount: 0,
         customersCount: 0,
-        validDocumentsCount: 0,
-        expiredDocumentsCount: 0,
         recentCompanies: [],
         recentCustomers: [],
         warning: "Some data could not load. Verify Supabase tables.",
@@ -51,15 +43,9 @@ async function fetchDashboardStats(): Promise<DashboardStats> {
     const companies = companiesResult.data ?? [];
     const customers = customersResult.data ?? [];
 
-    const validCount = customers.filter(
-      (c) => c.expiry_date && c.expiry_date >= today,
-    ).length;
-
     return {
       companiesCount: companies.length,
       customersCount: customers.length,
-      validDocumentsCount: validCount,
-      expiredDocumentsCount: customers.length - validCount,
       recentCompanies: companies.slice(0, 4).map((c) => ({
         id: c.id,
         name: c.name,
@@ -77,8 +63,6 @@ async function fetchDashboardStats(): Promise<DashboardStats> {
     return {
       companiesCount: 0,
       customersCount: 0,
-      validDocumentsCount: 0,
-      expiredDocumentsCount: 0,
       recentCompanies: [],
       recentCustomers: [],
       warning: "Database is not configured. Add Supabase env values.",

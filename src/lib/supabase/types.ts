@@ -13,25 +13,16 @@ export type Database = {
         Row: {
           id: string;
           name: string;
-          name_ar: string | null;
-          contact_info: string | null;
-          contact_info_ar: string | null;
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
-          name_ar?: string | null;
-          contact_info?: string | null;
-          contact_info_ar?: string | null;
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
-          name_ar?: string | null;
-          contact_info?: string | null;
-          contact_info_ar?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -45,10 +36,7 @@ export type Database = {
           passport: string | null;
           job_title: string | null;
           job_title_ar: string | null;
-          issue_date: string | null;
-          expiry_date: string | null;
           image_url: string | null;
-          qr_token: string | null;
           created_at: string;
           municipal: string | null;
           honesty: string | null;
@@ -60,8 +48,6 @@ export type Database = {
           health_cert_expiry: string | null;
           health_cert_issue_hijri: string | null;
           health_cert_issue_gregorian: string | null;
-          health_cert_expiry_hijri: string | null;
-          health_cert_expiry_gregorian: string | null;
           edu_program_end: string | null;
           edu_program_end_gregorian: string | null;
           edu_program_type: string | null;
@@ -77,10 +63,7 @@ export type Database = {
           passport?: string | null;
           job_title?: string | null;
           job_title_ar?: string | null;
-          issue_date?: string | null;
-          expiry_date?: string | null;
           image_url?: string | null;
-          qr_token?: string | null;
           created_at?: string;
           municipal?: string | null;
           honesty?: string | null;
@@ -92,8 +75,6 @@ export type Database = {
           health_cert_expiry?: string | null;
           health_cert_issue_hijri?: string | null;
           health_cert_issue_gregorian?: string | null;
-          health_cert_expiry_hijri?: string | null;
-          health_cert_expiry_gregorian?: string | null;
           edu_program_end?: string | null;
           edu_program_end_gregorian?: string | null;
           edu_program_type?: string | null;
@@ -109,10 +90,7 @@ export type Database = {
           passport?: string | null;
           job_title?: string | null;
           job_title_ar?: string | null;
-          issue_date?: string | null;
-          expiry_date?: string | null;
           image_url?: string | null;
-          qr_token?: string | null;
           created_at?: string;
           municipal?: string | null;
           honesty?: string | null;
@@ -124,8 +102,6 @@ export type Database = {
           health_cert_expiry?: string | null;
           health_cert_issue_hijri?: string | null;
           health_cert_issue_gregorian?: string | null;
-          health_cert_expiry_hijri?: string | null;
-          health_cert_expiry_gregorian?: string | null;
           edu_program_end?: string | null;
           edu_program_end_gregorian?: string | null;
           edu_program_type?: string | null;

@@ -1,7 +1,5 @@
 -- Add Arabic translation fields to companies table
-alter table public.companies 
-add column if not exists name_ar text,
-add column if not exists contact_info_ar text;
+-- No-op: company translation fields were removed from the schema.
 
 -- Add Arabic translation fields to customers table  
 alter table public.customers

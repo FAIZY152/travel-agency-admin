@@ -78,7 +78,7 @@ export default function LoginPage() {
               Single-admin auth should feel invisible, not heavy.
             </h1>
             <p className="mt-4 max-w-md text-sm leading-7 text-white/80">
-              This screen is only the gatekeeper. After login, the real product starts: company records, customer documents, QR verification, and printing.
+              This screen is only the gatekeeper. After login, the real product starts: company records, customer documents, and printing.
             </p>
 
             <div className="mt-10 grid gap-3">
@@ -86,7 +86,6 @@ export default function LoginPage() {
                 "Check email and password against `.env.local`",
                 "Store JWT in an httpOnly cookie",
                 "Redirect to protected admin route",
-                "Keep `/verify/[token]` public for QR scans",
               ].map((item) => (
                 <div
                   key={item}

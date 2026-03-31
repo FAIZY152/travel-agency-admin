@@ -2,15 +2,23 @@
 
 import { useState } from "react";
 import { CustomerImageUpload } from "@/components/customer-image-upload";
+import { CustomerSubmitButton } from "@/components/customer-submit-button";
 import { createCustomerAction } from "@/app/dashboard/customers/actions";
 
 type Company = { id: string; name: string };
 
-export function AddCustomerForm({ companies }: { companies: Company[] }) {
+export function AddCustomerForm({
+  companies,
+  returnTo = "/dashboard/customers",
+}: {
+  companies: Company[];
+  returnTo?: string;
+}) {
   const [uploading, setUploading] = useState(false);
 
   return (
     <form action={createCustomerAction} className="space-y-4">
+      <input type="hidden" name="returnTo" value={returnTo} />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
@@ -116,37 +124,9 @@ export function AddCustomerForm({ companies }: { companies: Company[] }) {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label htmlFor="healthCertExpiryHijri" className="field-label">Health cert expiry (Hijri)</label>
-          <input id="healthCertExpiryHijri" name="healthCertExpiryHijri" className="field-input" placeholder="e.g. 1448/01/07" />
-        </div>
-        <div>
-          <label htmlFor="healthCertExpiryGregorian" className="field-label">Health cert expiry (Gregorian)</label>
-          <input id="healthCertExpiryGregorian" name="healthCertExpiryGregorian" className="field-input" placeholder="e.g. 2026/06/22" />
-        </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label htmlFor="issueDate" className="field-label">Issue Date</label>
-          <input id="issueDate" name="issueDate" type="date" required className="field-input" />
-        </div>
-        <div>
-          <label htmlFor="expiryDate" className="field-label">Expiry Date</label>
-          <input id="expiryDate" name="expiryDate" type="date" required className="field-input" />
-        </div>
-      </div>
-
       <CustomerImageUpload inputName="imageUrl" onUploadingChange={setUploading} />
 
-      <button
-        type="submit"
-        disabled={companies.length === 0 || uploading}
-        className="primary-button w-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {uploading ? "Uploading image..." : "Save Customer"}
-      </button>
+      <CustomerSubmitButton disabled={companies.length === 0} uploading={uploading} />
     </form>
   );
 }

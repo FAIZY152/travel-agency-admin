@@ -12,13 +12,6 @@ const createCompanySchema = z.object({
     .trim()
     .min(2, "Company name must be at least 2 characters.")
     .max(120, "Company name is too long."),
-  nameAr: z.string().trim().max(120).optional(),
-  contactInfo: z
-    .string()
-    .trim()
-    .max(180, "Contact info is too long.")
-    .optional(),
-  contactInfoAr: z.string().trim().max(180).optional(),
 });
 
 type CreateCompanyInput = z.infer<typeof createCompanySchema>;
@@ -30,7 +23,7 @@ export async function listCompanies() {
     const supabase = getSupabaseAdminClient();
     const { data, error } = await supabase
       .from("companies")
-      .select("id, name, name_ar, contact_info, contact_info_ar, created_at")
+      .select("id, name, created_at")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -63,13 +56,13 @@ export async function listCompaniesPaginated(page: number, pageSize: number, que
     const result = query
       ? await supabase
           .from("companies")
-          .select("id, name, name_ar, contact_info, contact_info_ar, created_at", { count: "exact" })
-          .or(`name.ilike.%${query}%,contact_info.ilike.%${query}%`)
+          .select("id, name, created_at", { count: "exact" })
+          .ilike("name", `%${query}%`)
           .order("created_at", { ascending: false })
           .range(from, to)
       : await supabase
           .from("companies")
-          .select("id, name, name_ar, contact_info, contact_info_ar, created_at", { count: "exact" })
+          .select("id, name, created_at", { count: "exact" })
           .order("created_at", { ascending: false })
           .range(from, to);
 
@@ -97,9 +90,6 @@ export async function createCompany(input: CreateCompanyInput) {
     const supabase = getSupabaseAdminClient();
     const { error } = await supabase.from("companies").insert({
       name: parsed.data.name,
-      name_ar: parsed.data.nameAr || null,
-      contact_info: parsed.data.contactInfo || null,
-      contact_info_ar: parsed.data.contactInfoAr || null,
     });
 
     if (error) {

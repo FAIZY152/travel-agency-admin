@@ -164,7 +164,7 @@ export default async function DashboardPage() {
                 step: "02",
                 title: "Customer Entry",
                 description:
-                  "Add a customer with passport, job title, issue and expiry dates, and image upload.",
+                  "Add a customer with identity details, certificate details, and image upload.",
                 accent: "#eff6ff",
                 border: "#bfdbfe",
                 stepColor: "#2563eb",
@@ -273,53 +273,6 @@ export default async function DashboardPage() {
               </Link>
             ))}
           </div>
-
-          {/* Document health mini-summary */}
-          {(stats.validDocumentsCount + stats.expiredDocumentsCount) > 0 && (
-            <div
-              className="mt-4 flex items-center gap-4 rounded-[18px] px-4 py-4"
-              style={{ background: "#f0fdf9", border: "1px solid #d1fae5" }}
-            >
-              <svg width="44" height="44" viewBox="0 0 44 44" className="shrink-0">
-                <circle cx="22" cy="22" r="16" fill="none" stroke="#d1fae5" strokeWidth="5" />
-                <circle
-                  cx="22"
-                  cy="22"
-                  r="16"
-                  fill="none"
-                  stroke="#10b981"
-                  strokeWidth="5"
-                  strokeDasharray={`${
-                    (stats.validDocumentsCount /
-                      (stats.validDocumentsCount + stats.expiredDocumentsCount)) *
-                    100.53
-                  } 100.53`}
-                  strokeLinecap="round"
-                  transform="rotate(-90 22 22)"
-                />
-                <text
-                  x="22"
-                  y="26"
-                  textAnchor="middle"
-                  fontSize="9"
-                  fontWeight="700"
-                  fill="#059669"
-                >
-                  {Math.round(
-                    (stats.validDocumentsCount /
-                      (stats.validDocumentsCount + stats.expiredDocumentsCount)) *
-                      100
-                  )}%
-                </text>
-              </svg>
-              <div>
-                <p className="text-sm font-bold text-emerald-800">Document Health</p>
-                <p className="mt-0.5 text-xs text-emerald-600">
-                  {stats.validDocumentsCount} valid · {stats.expiredDocumentsCount} expired
-                </p>
-              </div>
-            </div>
-          )}
         </article>
       </section>
 

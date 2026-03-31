@@ -1,8 +1,5 @@
 import Link from "next/link";
-import {
-  createCompanyAction,
-  deleteCompanyAction,
-} from "@/app/dashboard/companies/actions";
+import { AddCompanyForm } from "@/components/add-company-form";
 
 function readParam(
   value: string | string[] | undefined,
@@ -44,8 +41,8 @@ export default async function AddCompanyPage(props: {
             <h1 className="mt-3 font-display text-4xl text-[#182533]">
               Add Company
             </h1>
-            <p className="mt-3 text-sm leading-7 text-muted">
-              Register a new partner company. Each customer must be linked to a company for document generation.
+          <p className="mt-3 text-sm leading-7 text-muted">
+              Register a new partner company with its Arabic name for customer assignment and document generation.
             </p>
           </div>
 
@@ -93,62 +90,7 @@ export default async function AddCompanyPage(props: {
             and printed document.
           </p>
 
-          <form action={createCompanyAction} className="mt-6 space-y-4">
-            <div>
-              <label htmlFor="name" className="field-label">
-                Company Name (English)
-              </label>
-              <input
-                id="name"
-                name="name"
-                required
-                className="field-input"
-                placeholder="Skyline Tours LLC"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="nameAr" className="field-label">
-                Company Name (العربية)
-              </label>
-              <input
-                id="nameAr"
-                name="nameAr"
-                className="field-input"
-                placeholder="شركة skyline tours"
-                dir="rtl"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contactInfo" className="field-label">
-                Contact Info (English)
-              </label>
-              <input
-                id="contactInfo"
-                name="contactInfo"
-                className="field-input"
-                placeholder="+1 555 123 4567"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contactInfoAr" className="field-label">
-                Contact Info (العربية)
-              </label>
-              <input
-                id="contactInfoAr"
-                name="contactInfoAr"
-                className="field-input"
-                placeholder="+1 555 123 4567"
-                dir="rtl"
-              />
-            </div>
-
-            <button type="submit" className="primary-button w-full cursor-pointer">
-              Save Company
-            </button>
-          </form>
+          <AddCompanyForm returnTo="/dashboard/companies/list" />
         </article>
 
         {/* Quick Tips */}
@@ -168,9 +110,9 @@ export default async function AddCompanyPage(props: {
                 icon: "✓",
               },
               {
-                title: "Valid Contact Info",
-                description: "Include a phone or email for reference on printed documents.",
-                icon: "📞",
+                title: "Use Arabic Name",
+                description: "Keep the official Arabic company name consistent everywhere it appears.",
+                icon: "ع",
               },
               {
                 title: "Clean Records",

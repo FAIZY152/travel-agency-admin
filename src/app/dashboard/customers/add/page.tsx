@@ -59,7 +59,7 @@ export default async function AddCustomerPage(props: {
       ) : null}
 
       <article className="panel rounded-[30px] p-6 ring-1 ring-[#d7c0a0] shadow-[0_24px_60px_-45px_rgba(200,138,61,0.65)]">
-        <AddCustomerForm companies={companies} />
+        <AddCustomerForm companies={companies} returnTo="/dashboard/customers/list" />
       </article>
     </div>
   );

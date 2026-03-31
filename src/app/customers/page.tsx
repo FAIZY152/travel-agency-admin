@@ -5,8 +5,6 @@ import { useState } from "react";
 const mockStats = {
   companiesCount: 12,
   customersCount: 148,
-  validDocumentsCount: 131,
-  expiredDocumentsCount: 17,
   recentCompanies: [
     { id: 1, name: "Horizon Travel Group", createdAt: "2026-03-20" },
     { id: 2, name: "Apex Voyages Ltd.", createdAt: "2026-03-15" },
@@ -279,7 +277,7 @@ function StatCard({ label, value, hint, color, badge }) {
 }
 
 function DashboardMain() {
-  const { companiesCount, customersCount, validDocumentsCount, expiredDocumentsCount, recentCompanies, recentCustomers } = mockStats;
+  const { companiesCount, customersCount, recentCompanies, recentCustomers } = mockStats;
 
   const setupState =
     companiesCount === 0
@@ -356,18 +354,18 @@ function DashboardMain() {
           badge={{ text: "+14 this month", style: { background: "#eff6ff", color: "#2563eb", border: "1px solid #bfdbfe" } }}
         />
         <StatCard
-          label="Valid Documents"
-          value={validDocumentsCount}
-          hint="Customers with non-expired dates"
+          label="Recent Companies"
+          value={recentCompanies.length}
+          hint="Newest partner organizations"
           color="#059669"
-          badge={{ text: "88.5% rate", style: { background: "#f0fdf9", color: "#059669", border: "1px solid #a7f3d0" } }}
+          badge={{ text: "Updated this week", style: { background: "#f0fdf9", color: "#059669", border: "1px solid #a7f3d0" } }}
         />
         <StatCard
-          label="Expired Documents"
-          value={expiredDocumentsCount}
-          hint="Records that may need renewal"
+          label="Recent Customers"
+          value={recentCustomers.length}
+          hint="Latest customer entries"
           color="#dc2626"
-          badge={{ text: "Needs action", style: { background: "#fff1f2", color: "#dc2626", border: "1px solid #fecaca" } }}
+          badge={{ text: "Active flow", style: { background: "#fff1f2", color: "#dc2626", border: "1px solid #fecaca" } }}
         />
       </div>
 
@@ -397,7 +395,7 @@ function DashboardMain() {
           <div className="grid grid-cols-2 gap-3">
             {[
               { title: "1. Company Setup", description: "Register partner companies once so all new customer records can be linked correctly." },
-              { title: "2. Customer Entry", description: "Add a customer with passport, job title, issue and expiry dates, and image upload." },
+              { title: "2. Customer Entry", description: "Add a customer with identity details, certificate details, and image upload." },
               { title: "3. Document View", description: "Open the generated customer document to review the printable layout and QR code." },
               { title: "4. Public Verify", description: "Anyone scanning the QR lands on the public verification page outside the admin wall." },
             ].map((item, i) => (
@@ -446,27 +444,19 @@ function DashboardMain() {
             ))}
           </div>
 
-          {/* Donut-style ratio */}
+          {/* Activity summary */}
           <div
             className="mt-4 rounded-xl px-4 py-4 flex items-center gap-4"
             style={{ background: "#f0fdf9", border: "1px solid #d1fae5" }}
           >
             <svg width="48" height="48" viewBox="0 0 48 48">
-              <circle cx="24" cy="24" r="18" fill="none" stroke="#d1fae5" strokeWidth="6" />
-              <circle
-                cx="24" cy="24" r="18" fill="none" stroke="#10b981" strokeWidth="6"
-                strokeDasharray={`${(validDocumentsCount / (validDocumentsCount + expiredDocumentsCount)) * 113} 113`}
-                strokeLinecap="round"
-                transform="rotate(-90 24 24)"
-              />
-              <text x="24" y="28" textAnchor="middle" fontSize="10" fontWeight="700" fill="#059669">
-                {Math.round((validDocumentsCount / (validDocumentsCount + expiredDocumentsCount)) * 100)}%
-              </text>
+              <rect x="8" y="12" width="32" height="24" rx="8" fill="#dcfce7" />
+              <path d="M16 24h16M16 19h10M16 29h8" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" />
             </svg>
             <div>
-              <p className="text-sm font-bold" style={{ color: "#065f46" }}>Document Health</p>
+              <p className="text-sm font-bold" style={{ color: "#065f46" }}>Activity Snapshot</p>
               <p className="text-xs leading-5 mt-0.5" style={{ color: "#059669" }}>
-                {validDocumentsCount} valid · {expiredDocumentsCount} expired
+                {recentCustomers.length} recent customers · {recentCompanies.length} recent companies
               </p>
             </div>
           </div>

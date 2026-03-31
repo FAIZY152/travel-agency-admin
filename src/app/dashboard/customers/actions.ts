@@ -4,9 +4,34 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createCustomer, deleteCustomer, updateCustomer } from "@/lib/data/customers";
 
-function buildCustomersRedirectUrl(params: Record<string, string>) {
+const DEFAULT_CUSTOMERS_ROUTE = "/dashboard/customers";
+const ALLOWED_CUSTOMER_PATHS = new Set([
+  "/dashboard/customers",
+  "/dashboard/customers/add",
+  "/dashboard/customers/list",
+]);
+
+function getSafeReturnTo(formData: FormData) {
+  const rawValue = String(formData.get("returnTo") ?? "").trim();
+
+  if (!rawValue) {
+    return DEFAULT_CUSTOMERS_ROUTE;
+  }
+
+  try {
+    const parsed = new URL(rawValue, "http://localhost");
+    return ALLOWED_CUSTOMER_PATHS.has(parsed.pathname)
+      ? `${parsed.pathname}${parsed.search}`
+      : DEFAULT_CUSTOMERS_ROUTE;
+  } catch {
+    return DEFAULT_CUSTOMERS_ROUTE;
+  }
+}
+
+function buildCustomersRedirectUrl(params: Record<string, string>, basePath = DEFAULT_CUSTOMERS_ROUTE) {
   const query = new URLSearchParams(params);
-  return `/dashboard/customers?${query.toString()}`;
+  const queryString = query.toString();
+  return queryString ? `${basePath}?${queryString}` : basePath;
 }
 
 function parseCustomerForm(formData: FormData) {
@@ -15,8 +40,6 @@ function parseCustomerForm(formData: FormData) {
     name: String(formData.get("name") ?? ""),
     passport: String(formData.get("passport") ?? ""),
     jobTitle: String(formData.get("jobTitle") ?? ""),
-    issueDate: String(formData.get("issueDate") ?? ""),
-    expiryDate: String(formData.get("expiryDate") ?? ""),
     imageUrl: String(formData.get("imageUrl") ?? ""),
     municipal: String(formData.get("municipal") ?? ""),
     honesty: String(formData.get("honesty") ?? ""),
@@ -28,8 +51,6 @@ function parseCustomerForm(formData: FormData) {
     healthCertExpiry: String(formData.get("healthCertExpiry") ?? ""),
     healthCertIssueHijri: String(formData.get("healthCertIssueHijri") ?? ""),
     healthCertIssueGregorian: String(formData.get("healthCertIssueGregorian") ?? ""),
-    healthCertExpiryHijri: String(formData.get("healthCertExpiryHijri") ?? ""),
-    healthCertExpiryGregorian: String(formData.get("healthCertExpiryGregorian") ?? ""),
     eduProgramEnd: String(formData.get("eduProgramEnd") ?? ""),
     eduProgramEndGregorian: String(formData.get("eduProgramEndGregorian") ?? ""),
     eduProgramType: String(formData.get("eduProgramType") ?? ""),
@@ -40,39 +61,45 @@ function parseCustomerForm(formData: FormData) {
 }
 
 export async function createCustomerAction(formData: FormData) {
+  const returnTo = getSafeReturnTo(formData);
   const result = await createCustomer(parseCustomerForm(formData));
 
   if (result.ok) {
     revalidatePath("/dashboard/customers");
+    revalidatePath("/dashboard/customers/list");
     revalidatePath("/dashboard");
-    redirect(buildCustomersRedirectUrl({ status: "created" }));
+    redirect(buildCustomersRedirectUrl({ status: "created" }, returnTo));
   }
 
-  redirect(buildCustomersRedirectUrl({ error: result.message }));
+  redirect(buildCustomersRedirectUrl({ error: result.message }, returnTo));
 }
 
 export async function updateCustomerAction(formData: FormData) {
   const customerId = String(formData.get("customerId") ?? "");
+  const returnTo = getSafeReturnTo(formData);
   const result = await updateCustomer(customerId, parseCustomerForm(formData));
 
   if (result.ok) {
     revalidatePath("/dashboard/customers");
+    revalidatePath("/dashboard/customers/list");
     revalidatePath("/dashboard");
-    redirect(buildCustomersRedirectUrl({ status: "updated" }));
+    redirect(buildCustomersRedirectUrl({ status: "updated" }, returnTo));
   }
 
-  redirect(buildCustomersRedirectUrl({ error: result.message, edit: customerId }));
+  redirect(buildCustomersRedirectUrl({ error: result.message, edit: customerId }, returnTo));
 }
 
 export async function deleteCustomerAction(formData: FormData) {
   const customerId = String(formData.get("customerId") ?? "");
+  const returnTo = getSafeReturnTo(formData);
   const result = await deleteCustomer(customerId);
 
   if (result.ok) {
     revalidatePath("/dashboard/customers");
+    revalidatePath("/dashboard/customers/list");
     revalidatePath("/dashboard");
-    redirect(buildCustomersRedirectUrl({ status: "deleted" }));
+    redirect(buildCustomersRedirectUrl({ status: "deleted" }, returnTo));
   }
 
-  redirect(buildCustomersRedirectUrl({ error: result.message }));
+  redirect(buildCustomersRedirectUrl({ error: result.message }, returnTo));
 }

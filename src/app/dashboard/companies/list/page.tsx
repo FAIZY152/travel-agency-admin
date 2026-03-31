@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { deleteCompanyAction } from "@/app/dashboard/companies/actions";
+import { CompanyDeleteModal } from "@/components/company-delete-modal";
 import { listCompanies } from "@/lib/data/companies";
 
 function readParam(
@@ -39,10 +39,7 @@ export default async function CompanyListPage(props: {
       return true;
     }
 
-    return [company.name, company.contact_info || ""]
-      .join(" ")
-      .toLowerCase()
-      .includes(query);
+    return company.name.toLowerCase().includes(query);
   });
 
   const successMessage =
@@ -112,7 +109,7 @@ export default async function CompanyListPage(props: {
             {filteredCompanies.length}
           </p>
           <p className="mt-4 text-sm leading-6 text-muted">
-            Matches based on company name or contact information.
+            Matches based on company name.
           </p>
         </article>
         <article className="panel rounded-[28px] p-6">
@@ -171,7 +168,6 @@ export default async function CompanyListPage(props: {
                 <thead className="surface-muted text-left">
                   <tr>
                     <th>Name</th>
-                    <th>Contact</th>
                     <th>Created</th>
                     <th className="text-right">Action</th>
                   </tr>
@@ -185,22 +181,16 @@ export default async function CompanyListPage(props: {
                         </p>
                       </td>
                       <td className="text-sm text-muted">
-                        {company.contact_info || "No contact info"}
-                      </td>
-                      <td className="text-sm text-muted">
                         {formatDate(company.created_at)}
                       </td>
                       <td className="text-right">
-                        <form action={deleteCompanyAction} className="inline-flex">
-                          <input
-                            type="hidden"
-                            name="companyId"
-                            value={company.id}
+                        <div className="inline-flex">
+                          <CompanyDeleteModal
+                            companyId={company.id}
+                            companyName={company.name}
+                            returnTo={`/dashboard/companies/list${query ? `?query=${encodeURIComponent(query)}` : ""}`}
                           />
-                          <button type="submit" className="danger-button">
-                            Delete
-                          </button>
-                        </form>
+                        </div>
                       </td>
                     </tr>
                   ))}

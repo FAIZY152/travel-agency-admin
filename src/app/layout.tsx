@@ -9,12 +9,12 @@ export const metadata: Metadata = {
     default: "Travel Agency Admin",
     template: "%s | Travel Agency Admin",
   },
-  description: "Single-admin travel document verification platform",
+  description: "Single-admin travel document management platform",
   applicationName: "Travel Agency Admin",
   keywords: [
     "travel agency",
-    "document verification",
-    "qr verification",
+    "document management",
+    "health certificate",
     "admin dashboard",
   ],
 };

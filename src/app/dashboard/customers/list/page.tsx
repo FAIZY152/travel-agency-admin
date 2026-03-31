@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getVerificationStatus } from "@/lib/document";
 import { listCustomers } from "@/lib/data/customers";
 import { listCompanies } from "@/lib/data/companies";
 import { deleteCustomerAction, updateCustomerAction } from "@/app/dashboard/customers/actions";
@@ -9,14 +8,6 @@ function readParam(value: string | string[] | undefined, fallback = ""): string 
   if (typeof value === "string") return value;
   if (Array.isArray(value)) return value[0] || fallback;
   return fallback;
-}
-
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  }).format(new Date(value));
 }
 
 export default async function CustomerListPage(props: {
@@ -43,8 +34,8 @@ export default async function CustomerListPage(props: {
       .includes(query);
   });
 
-  const validCount = customers.filter(
-    (c) => getVerificationStatus(c.expiryDate) === "VALID",
+  const customersWithCertificates = customers.filter(
+    (c) => Boolean(c.healthCertNumber),
   ).length;
 
   const successMessage =
@@ -91,8 +82,8 @@ export default async function CustomerListPage(props: {
       <section className="grid gap-4 md:grid-cols-4">
         {[
           { label: "Total Customers", value: customers.length, color: "#182533" },
-          { label: "Valid Documents", value: validCount, color: "#0f766e" },
-          { label: "Expired Documents", value: customers.length - validCount, color: "#b91c1c" },
+          { label: "Total Companies", value: companies.length, color: "#0f766e" },
+          { label: "With Certificate No.", value: customersWithCertificates, color: "#b91c1c" },
           { label: "Filtered Result", value: filteredCustomers.length, color: "#182533" },
         ].map((s) => (
           <article key={s.label} className="panel rounded-[28px] p-6">
@@ -114,6 +105,7 @@ export default async function CustomerListPage(props: {
 
           <form action={updateCustomerAction} className="space-y-4">
             <input type="hidden" name="customerId" value={editCustomer.id} />
+            <input type="hidden" name="returnTo" value="/dashboard/customers/list" />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -219,28 +211,6 @@ export default async function CustomerListPage(props: {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="e-healthCertExpiryHijri" className="field-label">Health cert expiry (Hijri)</label>
-                <input id="e-healthCertExpiryHijri" name="healthCertExpiryHijri" defaultValue={editCustomer.healthCertExpiryHijri || ""} className="field-input" />
-              </div>
-              <div>
-                <label htmlFor="e-healthCertExpiryGregorian" className="field-label">Health cert expiry (Gregorian)</label>
-                <input id="e-healthCertExpiryGregorian" name="healthCertExpiryGregorian" defaultValue={editCustomer.healthCertExpiryGregorian || ""} className="field-input" />
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="e-issueDate" className="field-label">Issue Date</label>
-                <input id="e-issueDate" name="issueDate" type="date" required defaultValue={editCustomer.issueDate} className="field-input" />
-              </div>
-              <div>
-                <label htmlFor="e-expiryDate" className="field-label">Expiry Date</label>
-                <input id="e-expiryDate" name="expiryDate" type="date" required defaultValue={editCustomer.expiryDate} className="field-input" />
-              </div>
-            </div>
-
             {/* Keep existing imageUrl */}
             <input type="hidden" name="imageUrl" value={editCustomer.imageUrl} />
 
@@ -282,14 +252,12 @@ export default async function CustomerListPage(props: {
                       <th>Customer</th>
                       <th>Company</th>
                       <th>ID / Nationality</th>
-                      <th>Dates</th>
-                      <th>Status</th>
+                      <th>Certificate</th>
                       <th className="text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredCustomers.map((customer) => {
-                      const st = getVerificationStatus(customer.expiryDate);
                       return (
                         <tr key={customer.id}>
                           <td>
@@ -313,13 +281,8 @@ export default async function CustomerListPage(props: {
                             <p className="mt-1">{customer.nationality || "—"}</p>
                           </td>
                           <td className="text-sm text-muted">
-                            <p>Issue: {formatDate(customer.issueDate)}</p>
-                            <p className="mt-1">Expiry: {formatDate(customer.expiryDate)}</p>
-                          </td>
-                          <td>
-                            <span className={`status-pill ${st === "VALID" ? "status-pill-valid" : "status-pill-expired"}`}>
-                              {st}
-                            </span>
+                            <p>No: {customer.healthCertNumber || "—"}</p>
+                            <p className="mt-1">Expiry: {customer.healthCertExpiry || "—"}</p>
                           </td>
                           <td>
                             <div className="flex flex-wrap justify-end gap-2">
@@ -337,6 +300,7 @@ export default async function CustomerListPage(props: {
                               </Link>
                               <form action={deleteCustomerAction}>
                                 <input type="hidden" name="customerId" value={customer.id} />
+                                <input type="hidden" name="returnTo" value="/dashboard/customers/list" />
                                 <button type="submit" className="danger-button">Delete</button>
                               </form>
                             </div>
@@ -352,7 +316,6 @@ export default async function CustomerListPage(props: {
             {/* Mobile Cards */}
             <div className="mt-6 grid gap-4 xl:hidden">
               {filteredCustomers.map((customer) => {
-                const st = getVerificationStatus(customer.expiryDate);
                 return (
                   <article
                     key={customer.id}
@@ -367,20 +330,15 @@ export default async function CustomerListPage(props: {
                         className="h-36 w-full rounded-[22px] object-cover"
                       />
                       <div className="space-y-3">
-                        <div className="flex flex-wrap items-start justify-between gap-3">
-                          <div>
-                            <p className="text-xl font-semibold text-[#19303d]">{customer.name}</p>
-                            <p className="mt-1 text-sm text-muted">{customer.nationality || "—"}</p>
-                          </div>
-                          <span className={`status-pill ${st === "VALID" ? "status-pill-valid" : "status-pill-expired"}`}>
-                            {st}
-                          </span>
+                        <div>
+                          <p className="text-xl font-semibold text-[#19303d]">{customer.name}</p>
+                          <p className="mt-1 text-sm text-muted">{customer.nationality || "—"}</p>
                         </div>
                         <div className="grid gap-2 text-sm text-[#19303d] sm:grid-cols-2">
                           <p>Company: {customer.companyName}</p>
                           <p>ID: {customer.idNumber || "—"}</p>
-                          <p>Issue: {formatDate(customer.issueDate)}</p>
-                          <p>Expiry: {formatDate(customer.expiryDate)}</p>
+                          <p>Certificate No: {customer.healthCertNumber || "—"}</p>
+                          <p>Certificate Expiry: {customer.healthCertExpiry || "—"}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2 pt-1">
                           <Link href={`/document/${customer.id}`} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
@@ -391,6 +349,7 @@ export default async function CustomerListPage(props: {
                           </Link>
                           <form action={deleteCustomerAction}>
                             <input type="hidden" name="customerId" value={customer.id} />
+                            <input type="hidden" name="returnTo" value="/dashboard/customers/list" />
                             <button type="submit" className="danger-button">Delete</button>
                           </form>
                         </div>
