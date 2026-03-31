@@ -32,8 +32,7 @@ function isPublicPath(pathname: string) {
 
 function isProtectedPath(pathname: string) {
   return (
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/document")
+    pathname.startsWith("/dashboard")
   );
 }
 

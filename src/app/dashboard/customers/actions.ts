@@ -48,6 +48,7 @@ function parseCustomerForm(formData: FormData) {
     sex: String(formData.get("sex") ?? ""),
     occupation: String(formData.get("occupation") ?? ""),
     healthCertNumber: String(formData.get("healthCertNumber") ?? ""),
+    healthCertExpiryHijri: String(formData.get("healthCertExpiryHijri") ?? ""),
     healthCertExpiry: String(formData.get("healthCertExpiry") ?? ""),
     healthCertIssueHijri: String(formData.get("healthCertIssueHijri") ?? ""),
     healthCertIssueGregorian: String(formData.get("healthCertIssueGregorian") ?? ""),

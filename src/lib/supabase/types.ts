@@ -45,6 +45,7 @@ export type Database = {
           sex: string | null;
           occupation: string | null;
           health_cert_number: string | null;
+          health_cert_expiry_hijri: string | null;
           health_cert_expiry: string | null;
           health_cert_issue_hijri: string | null;
           health_cert_issue_gregorian: string | null;
@@ -72,6 +73,7 @@ export type Database = {
           sex?: string | null;
           occupation?: string | null;
           health_cert_number?: string | null;
+          health_cert_expiry_hijri?: string | null;
           health_cert_expiry?: string | null;
           health_cert_issue_hijri?: string | null;
           health_cert_issue_gregorian?: string | null;
@@ -99,6 +101,7 @@ export type Database = {
           sex?: string | null;
           occupation?: string | null;
           health_cert_number?: string | null;
+          health_cert_expiry_hijri?: string | null;
           health_cert_expiry?: string | null;
           health_cert_issue_hijri?: string | null;
           health_cert_issue_gregorian?: string | null;

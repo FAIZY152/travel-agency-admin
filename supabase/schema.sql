@@ -23,6 +23,7 @@ create table if not exists public.customers (
   sex text,
   occupation text,
   health_cert_number text,
+  health_cert_expiry_hijri text,
   health_cert_expiry text,
   health_cert_issue_hijri text,
   health_cert_issue_gregorian text,

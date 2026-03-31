@@ -51,10 +51,11 @@ export default async function AddCustomerPage(props: {
 
       {companies.length === 0 ? (
         <div className="rounded-[20px] border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
-          Add at least one company first.{" "}
+          Company is optional. You can still save the customer now, or{" "}
           <Link href="/dashboard/companies/add" className="ml-2 underline">
-            Add Company
+            add a company later
           </Link>
+          .
         </div>
       ) : null}
 

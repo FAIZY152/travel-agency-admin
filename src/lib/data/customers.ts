@@ -25,6 +25,7 @@ export type CustomerListItem = {
   sex: string | null;
   occupation: string | null;
   healthCertNumber: string | null;
+  healthCertExpiryHijri: string | null;
   healthCertExpiry: string | null;
   healthCertIssueHijri: string | null;
   healthCertIssueGregorian: string | null;
@@ -36,18 +37,17 @@ export type CustomerListItem = {
   facilityNumber: string | null;
 };
 
+const EMPTY_IMAGE_DATA_URL =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+
 const customerInputSchema = z.object({
-  companyId: z.string().uuid("Select a valid company."),
-  name: z
-    .string()
-    .trim()
-    .min(2, "Name must be at least 2 characters.")
-    .max(120, "Name is too long."),
+  companyId: z.string().trim().optional().default(""),
+  name: z.string().trim().optional().default(""),
   nameAr: z.string().trim().max(120).optional(),
   passport: z.string().trim().max(60).optional().default(""),
   jobTitle: z.string().trim().max(120).optional().default(""),
   jobTitleAr: z.string().trim().max(120).optional(),
-  imageUrl: z.url("Upload a valid image first."),
+  imageUrl: z.string().trim().optional().default(""),
   municipal: z.string().trim().max(200).optional(),
   honesty: z.string().trim().max(200).optional(),
   idNumber: z.string().trim().max(60).optional(),
@@ -55,6 +55,7 @@ const customerInputSchema = z.object({
   sex: z.string().trim().max(20).optional(),
   occupation: z.string().trim().max(120).optional(),
   healthCertNumber: z.string().trim().max(60).optional(),
+  healthCertExpiryHijri: z.string().trim().max(60).optional(),
   healthCertExpiry: z.string().trim().max(60).optional(),
   healthCertIssueHijri: z.string().trim().max(60).optional(),
   healthCertIssueGregorian: z.string().trim().max(60).optional(),
@@ -72,30 +73,27 @@ function sanitizeCustomerRow(
   row: CustomerRow,
   companiesById: Map<string, CompanyRow>,
 ): CustomerListItem | null {
-  if (!row.name || !row.image_url) {
-    return null;
-  }
-
   const company = row.company_id ? companiesById.get(row.company_id) : null;
 
   return {
     id: row.id,
     companyId: row.company_id,
-    companyName: company?.name || "Unknown company",
-    name: row.name,
+    companyName: company?.name || "",
+    name: row.name || "",
     nameAr: row.name_ar || null,
     passport: row.passport || "",
     jobTitle: row.job_title || "",
     jobTitleAr: row.job_title_ar || null,
-    imageUrl: row.image_url,
+    imageUrl: row.image_url || EMPTY_IMAGE_DATA_URL,
     createdAt: row.created_at,
     municipal: row.municipal || null,
     honesty: row.honesty || null,
     idNumber: row.id_number || null,
     nationality: row.nationality || null,
     sex: row.sex || null,
-    occupation: row.occupation || null,
+    occupation: row.occupation || row.job_title || null,
     healthCertNumber: row.health_cert_number || null,
+    healthCertExpiryHijri: row.health_cert_expiry_hijri || null,
     healthCertExpiry: row.health_cert_expiry || null,
     healthCertIssueHijri: row.health_cert_issue_hijri || null,
     healthCertIssueGregorian: row.health_cert_issue_gregorian || null,
@@ -109,7 +107,7 @@ function sanitizeCustomerRow(
 }
 
 const CUSTOMERS_COLS =
-  "id, company_id, name, name_ar, passport, job_title, job_title_ar, image_url, created_at, municipal, honesty, id_number, nationality, sex, occupation, health_cert_number, health_cert_expiry, health_cert_issue_hijri, health_cert_issue_gregorian, edu_program_end, edu_program_end_gregorian, edu_program_type, facility_name, license_number, facility_number";
+  "id, company_id, name, name_ar, passport, job_title, job_title_ar, image_url, created_at, municipal, honesty, id_number, nationality, sex, occupation, health_cert_number, health_cert_expiry_hijri, health_cert_expiry, health_cert_issue_hijri, health_cert_issue_gregorian, edu_program_end, edu_program_end_gregorian, edu_program_type, facility_name, license_number, facility_number";
 
 async function loadCompaniesById() {
   const supabase = getSupabaseAdminClient();
@@ -248,13 +246,13 @@ export async function createCustomer(input: CustomerInput) {
     const supabase = getSupabaseAdminClient();
     const payload = parsed.data;
     const { error } = await supabase.from("customers").insert({
-      company_id: payload.companyId,
+      company_id: payload.companyId || null,
       name: payload.name,
       name_ar: payload.nameAr || null,
       passport: payload.passport || "",
       job_title: payload.jobTitle || "",
       job_title_ar: payload.jobTitleAr || null,
-      image_url: payload.imageUrl,
+      image_url: payload.imageUrl || "",
       municipal: payload.municipal || null,
       honesty: payload.honesty || null,
       id_number: payload.idNumber || null,
@@ -262,6 +260,7 @@ export async function createCustomer(input: CustomerInput) {
       sex: payload.sex || null,
       occupation: payload.occupation || null,
       health_cert_number: payload.healthCertNumber || null,
+      health_cert_expiry_hijri: payload.healthCertExpiryHijri || null,
       health_cert_expiry: payload.healthCertExpiry || null,
       health_cert_issue_hijri: payload.healthCertIssueHijri || null,
       health_cert_issue_gregorian: payload.healthCertIssueGregorian || null,
@@ -317,13 +316,13 @@ export async function updateCustomer(customerId: string, input: CustomerInput) {
     const { error } = await supabase
       .from("customers")
       .update({
-        company_id: payload.companyId,
+        company_id: payload.companyId || null,
         name: payload.name,
         name_ar: payload.nameAr || null,
         passport: payload.passport || "",
         job_title: payload.jobTitle || "",
         job_title_ar: payload.jobTitleAr || null,
-        image_url: payload.imageUrl,
+        image_url: payload.imageUrl || "",
         municipal: payload.municipal || null,
         honesty: payload.honesty || null,
         id_number: payload.idNumber || null,
@@ -331,6 +330,7 @@ export async function updateCustomer(customerId: string, input: CustomerInput) {
         sex: payload.sex || null,
         occupation: payload.occupation || null,
         health_cert_number: payload.healthCertNumber || null,
+        health_cert_expiry_hijri: payload.healthCertExpiryHijri || null,
         health_cert_expiry: payload.healthCertExpiry || null,
         health_cert_issue_hijri: payload.healthCertIssueHijri || null,
         health_cert_issue_gregorian: payload.healthCertIssueGregorian || null,

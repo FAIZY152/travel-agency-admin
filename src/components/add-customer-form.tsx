@@ -15,6 +15,7 @@ export function AddCustomerForm({
   returnTo?: string;
 }) {
   const [uploading, setUploading] = useState(false);
+  const customerButtonDisabled = uploading;
 
   return (
     <form action={createCustomerAction} className="space-y-4">
@@ -23,8 +24,8 @@ export function AddCustomerForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="companyId" className="field-label">Company</label>
-          <select id="companyId" name="companyId" required className="field-input bg-white">
-            <option value="">Select Company</option>
+          <select id="companyId" name="companyId" className="field-input bg-white">
+            <option value="">Leave Empty</option>
             {companies.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
@@ -38,8 +39,8 @@ export function AddCustomerForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="honesty" className="field-label">honesty</label>
-          <input id="honesty" name="honesty" className="field-input" placeholder="honesty" />
+          <label htmlFor="honesty" className="field-label">Honesty</label>
+          <input id="honesty" name="honesty" className="field-input" placeholder="Honesty" />
         </div>
         <div>
           <label htmlFor="idNumber" className="field-label">ID Number</label>
@@ -49,8 +50,8 @@ export function AddCustomerForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="field-label">The Name</label>
-          <input id="name" name="name" required className="field-input" placeholder="Enter Customer Name" />
+          <label htmlFor="name" className="field-label">Name</label>
+          <input id="name" name="name" className="field-input" placeholder="Leave empty if not available" />
         </div>
         <div>
           <label htmlFor="nationality" className="field-label">Nationality</label>
@@ -75,30 +76,37 @@ export function AddCustomerForm({
           <input id="healthCertNumber" name="healthCertNumber" className="field-input" placeholder="Health certificate number" />
         </div>
         <div>
-          <label htmlFor="healthCertExpiry" className="field-label">Health certificate expiration date</label>
-          <input id="healthCertExpiry" name="healthCertExpiry" className="field-input" placeholder="Health certificate expiration date" />
+          <label htmlFor="healthCertExpiryHijri" className="field-label">Health certificate expiry date (Hijri)</label>
+          <input id="healthCertExpiryHijri" name="healthCertExpiryHijri" className="field-input" placeholder="Health certificate expiry date (Hijri)" />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="healthCertIssueHijri" className="field-label">Date of issuance of the health certificate</label>
-          <input id="healthCertIssueHijri" name="healthCertIssueHijri" className="field-input" placeholder="Date of issuance of the health certificate" />
-        </div>
-        <div>
-          <label htmlFor="healthCertIssueGregorian" className="field-label">Date of issuance of the health certificate Gregorian</label>
-          <input id="healthCertIssueGregorian" name="healthCertIssueGregorian" className="field-input" placeholder="Date of issuance of the health certificate" />
+          <label htmlFor="healthCertExpiry" className="field-label">Health certificate expiry date (Gregorian)</label>
+          <input id="healthCertExpiry" name="healthCertExpiry" className="field-input" placeholder="Health certificate expiry date (Gregorian)" />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="eduProgramEnd" className="field-label">End date of the educational program</label>
-          <input id="eduProgramEnd" name="eduProgramEnd" className="field-input" placeholder="End date of the educational program" />
+          <label htmlFor="healthCertIssueHijri" className="field-label">Health certificate issue date (Hijri)</label>
+          <input id="healthCertIssueHijri" name="healthCertIssueHijri" className="field-input" placeholder="Health certificate issue date (Hijri)" />
         </div>
         <div>
-          <label htmlFor="eduProgramEndGregorian" className="field-label">End date of the educational program Gregorian</label>
-          <input id="eduProgramEndGregorian" name="eduProgramEndGregorian" className="field-input" placeholder="End date of the educational program Gregorian" />
+          <label htmlFor="healthCertIssueGregorian" className="field-label">Health certificate issue date (Gregorian)</label>
+          <input id="healthCertIssueGregorian" name="healthCertIssueGregorian" className="field-input" placeholder="Health certificate issue date (Gregorian)" />
+        </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label htmlFor="eduProgramEnd" className="field-label">Educational program end date (Hijri)</label>
+          <input id="eduProgramEnd" name="eduProgramEnd" className="field-input" placeholder="Educational program end date (Hijri)" />
+        </div>
+        <div>
+          <label htmlFor="eduProgramEndGregorian" className="field-label">Educational program end date (Gregorian)</label>
+          <input id="eduProgramEndGregorian" name="eduProgramEndGregorian" className="field-input" placeholder="Educational program end date (Gregorian)" />
         </div>
       </div>
 
@@ -115,8 +123,8 @@ export function AddCustomerForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="licenseNumber" className="field-label">license number</label>
-          <input id="licenseNumber" name="licenseNumber" className="field-input" placeholder="license number" />
+          <label htmlFor="licenseNumber" className="field-label">License number</label>
+          <input id="licenseNumber" name="licenseNumber" className="field-input" placeholder="License number" />
         </div>
         <div>
           <label htmlFor="facilityNumber" className="field-label">No. facility</label>
@@ -126,7 +134,7 @@ export function AddCustomerForm({
 
       <CustomerImageUpload inputName="imageUrl" onUploadingChange={setUploading} />
 
-      <CustomerSubmitButton disabled={companies.length === 0} uploading={uploading} />
+      <CustomerSubmitButton disabled={customerButtonDisabled} uploading={uploading} />
     </form>
   );
 }

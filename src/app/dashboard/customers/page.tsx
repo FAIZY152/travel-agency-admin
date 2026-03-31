@@ -114,8 +114,8 @@ export default async function CustomerListPage(props: {
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="e-companyId" className="field-label">Company</label>
-                <select id="e-companyId" name="companyId" required defaultValue={editCustomer.companyId || ""} className="field-input bg-white">
-                  <option value="">Select Company</option>
+                <select id="e-companyId" name="companyId" defaultValue={editCustomer.companyId || ""} className="field-input bg-white">
+                  <option value="">Leave Empty</option>
                   {companies.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
@@ -129,7 +129,7 @@ export default async function CustomerListPage(props: {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="e-honesty" className="field-label">honesty</label>
+                <label htmlFor="e-honesty" className="field-label">Honesty</label>
                 <input id="e-honesty" name="honesty" defaultValue={editCustomer.honesty || ""} className="field-input" />
               </div>
               <div>
@@ -140,8 +140,8 @@ export default async function CustomerListPage(props: {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="e-name" className="field-label">the name</label>
-                <input id="e-name" name="name" required defaultValue={editCustomer.name} className="field-input" />
+                <label htmlFor="e-name" className="field-label">Name</label>
+                <input id="e-name" name="name" defaultValue={editCustomer.name} className="field-input" />
               </div>
               <div>
                 <label htmlFor="e-nationality" className="field-label">Nationality</label>
@@ -166,29 +166,36 @@ export default async function CustomerListPage(props: {
                 <input id="e-healthCertNumber" name="healthCertNumber" defaultValue={editCustomer.healthCertNumber || ""} className="field-input" />
               </div>
               <div>
-                <label htmlFor="e-healthCertExpiry" className="field-label">Health certificate expiration date</label>
+                <label htmlFor="e-healthCertExpiryHijri" className="field-label">Health certificate expiry date (Hijri)</label>
+                <input id="e-healthCertExpiryHijri" name="healthCertExpiryHijri" defaultValue={editCustomer.healthCertExpiryHijri || ""} className="field-input" />
+c              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="e-healthCertExpiry" className="field-label">Health certificate expiry date (Gregorian)</label>
                 <input id="e-healthCertExpiry" name="healthCertExpiry" defaultValue={editCustomer.healthCertExpiry || ""} className="field-input" />
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="e-healthCertIssueHijri" className="field-label">Date of issuance (Hijri)</label>
+                <label htmlFor="e-healthCertIssueHijri" className="field-label">Health certificate issue date (Hijri)</label>
                 <input id="e-healthCertIssueHijri" name="healthCertIssueHijri" defaultValue={editCustomer.healthCertIssueHijri || ""} className="field-input" />
               </div>
               <div>
-                <label htmlFor="e-healthCertIssueGregorian" className="field-label">Date of issuance (Gregorian)</label>
+                <label htmlFor="e-healthCertIssueGregorian" className="field-label">Health certificate issue date (Gregorian)</label>
                 <input id="e-healthCertIssueGregorian" name="healthCertIssueGregorian" defaultValue={editCustomer.healthCertIssueGregorian || ""} className="field-input" />
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="e-eduProgramEnd" className="field-label">End date of educational program</label>
+                <label htmlFor="e-eduProgramEnd" className="field-label">Educational program end date (Hijri)</label>
                 <input id="e-eduProgramEnd" name="eduProgramEnd" defaultValue={editCustomer.eduProgramEnd || ""} className="field-input" />
               </div>
               <div>
-                <label htmlFor="e-eduProgramEndGregorian" className="field-label">End date of educational program (Gregorian)</label>
+                <label htmlFor="e-eduProgramEndGregorian" className="field-label">Educational program end date (Gregorian)</label>
                 <input id="e-eduProgramEndGregorian" name="eduProgramEndGregorian" defaultValue={editCustomer.eduProgramEndGregorian || ""} className="field-input" />
               </div>
             </div>
@@ -206,7 +213,7 @@ export default async function CustomerListPage(props: {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="e-licenseNumber" className="field-label">license number</label>
+                <label htmlFor="e-licenseNumber" className="field-label">License number</label>
                 <input id="e-licenseNumber" name="licenseNumber" defaultValue={editCustomer.licenseNumber || ""} className="field-input" />
               </div>
               <div>

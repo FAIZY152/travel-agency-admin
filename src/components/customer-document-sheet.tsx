@@ -4,7 +4,7 @@ import type { CustomerListItem } from "@/lib/data/customers";
 
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
-  weight: ["400", "500", "700"],
+  weight: ["700"],
 });
 
 type Props = {
@@ -20,7 +20,7 @@ function FieldCard({ label, value }: FieldItem) {
   return (
     <div className="doc-field">
       <div className="doc-label">{label}</div>
-      <div className="doc-value">{value || "\u2014"}</div>
+      <div className="doc-value">{value || ""}</div>
     </div>
   );
 }
@@ -59,7 +59,7 @@ export function CustomerDocumentSheet({ customer }: Props) {
     {
       right: {
         label: "تاريخ نهاية الشهادة الصحية هجري",
-        value: "",
+        value: customer.healthCertExpiryHijri,
       },
       left: {
         label: "تاريخ نهاية الشهادة الصحية ميلادي",
@@ -90,35 +90,36 @@ export function CustomerDocumentSheet({ customer }: Props) {
       <style>{`
         .doc-root {
           direction: rtl;
-          width: min(100%, 960px);
+          width: min(100%, 1128px);
           margin: 0 auto;
-          padding: 14px 18px 28px;
-          border-top: 1px solid #d6dbe3;
+          padding: 28px 26px 48px;
+          border-top: 1px solid #dfe4ea;
           background: #ffffff;
-          color: #2c3e50;
+          color: #334155;
           font-family: ${ibmPlexSansArabic.style.fontFamily}, 'Segoe UI', Arial, sans-serif;
+          font-weight: 700;
         }
 
         .doc-title {
-          margin: 10px 0 18px;
+          margin: 8px 0 22px;
           text-align: center;
-          font-size: 34px;
-          font-weight: 800;
-          color: #334b63;
-          line-height: 1.1;
+          font-size: 48px;
+          font-weight: 700;
+          color: #5f6c77;
+          line-height: 1.15;
         }
 
         .doc-photo-wrap {
           display: flex;
           justify-content: center;
-          margin-bottom: 18px;
+          margin-bottom: 16px;
         }
 
         .doc-photo {
-          width: 138px;
-          height: 138px;
+          width: 158px;
+          height: 158px;
           overflow: hidden;
-          background: #d1d5db;
+          background: #d6dbe2;
         }
 
         .doc-photo img {
@@ -131,13 +132,13 @@ export function CustomerDocumentSheet({ customer }: Props) {
         .doc-grid {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 12px;
         }
 
         .doc-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 20px;
+          gap: 22px;
         }
 
         .doc-row-single {
@@ -151,26 +152,26 @@ export function CustomerDocumentSheet({ customer }: Props) {
         .doc-field {
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 7px;
         }
 
         .doc-label {
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 700;
-          color: #1f2937;
+          color: #334155;
           text-align: right;
-          line-height: 1.25;
+          line-height: 1.35;
         }
 
         .doc-value {
-          min-height: 42px;
-          border: 1px solid #b8c3d1;
-          border-radius: 4px;
-          background: #ffffff;
-          padding: 9px 12px;
-          font-size: 14px;
-          font-weight: 600;
-          color: #6b7280;
+          min-height: 43px;
+          border: 1px solid #c5ced8;
+          border-radius: 2px;
+          background: #fdfefe;
+          padding: 8px 12px;
+          font-size: 15px;
+          font-weight: 700;
+          color: #7b8794;
           text-align: right;
           display: flex;
           align-items: center;
@@ -182,22 +183,22 @@ export function CustomerDocumentSheet({ customer }: Props) {
         @media (max-width: 640px) {
           .doc-root {
             width: 100%;
-            padding: 6px 12px 20px;
+            padding: 10px 12px 20px;
           }
 
           .doc-title {
-            margin-top: 6px;
+            margin-top: 8px;
             margin-bottom: 16px;
-            font-size: 30px;
+            font-size: 33px;
           }
 
           .doc-photo {
-            width: 160px;
-            height: 160px;
+            width: 128px;
+            height: 128px;
           }
 
           .doc-grid {
-            gap: 12px;
+            gap: 14px;
           }
 
           .doc-row,
@@ -216,7 +217,7 @@ export function CustomerDocumentSheet({ customer }: Props) {
 
           .doc-value {
             min-height: 44px;
-            font-size: 15px;
+            font-size: 14px;
           }
         }
 
@@ -251,7 +252,7 @@ export function CustomerDocumentSheet({ customer }: Props) {
               width={160}
               height={160}
               priority
-              sizes="(max-width: 640px) 160px, 138px"
+              sizes="(max-width: 640px) 128px, 158px"
             />
           </div>
         </div>
