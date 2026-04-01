@@ -92,6 +92,7 @@ CREATE TABLE customers (
   sex TEXT,
   occupation TEXT,
   health_cert_number TEXT,
+  health_cert_expiry_hijri TEXT,
   health_cert_expiry TEXT,
   health_cert_issue_hijri TEXT,
   health_cert_issue_gregorian TEXT,
