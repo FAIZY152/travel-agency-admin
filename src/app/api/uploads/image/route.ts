@@ -6,13 +6,16 @@ import {
   AUTH_JWT_ALGORITHM,
   getJwtSecret,
 } from "@/lib/auth";
+import { CUSTOMER_IMAGE_MAX_EDGE_PX } from "@/lib/cloudinary";
 
-const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+const MAX_IMAGE_SIZE_BYTES = 1024 * 1024;
 const SUPPORTED_IMAGE_TYPES = new Set([
   "image/jpeg",
   "image/png",
   "image/webp",
 ]);
+const CLOUDINARY_UPLOAD_FORMAT = "jpg";
+const CLOUDINARY_UPLOAD_TRANSFORMATION = `c_limit,w_${CUSTOMER_IMAGE_MAX_EDGE_PX},h_${CUSTOMER_IMAGE_MAX_EDGE_PX},q_auto:low,fl_strip_profile`;
 
 async function isAuthorized(request: Request) {
   const cookieHeader = request.headers.get("cookie") || "";
@@ -38,12 +41,16 @@ async function isAuthorized(request: Request) {
 }
 
 function buildCloudinarySignature(
-  folder: string,
-  timestamp: number,
+  params: Record<string, number | string | undefined>,
   apiSecret: string,
 ) {
-  const payload = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
-  return createHash("sha1").update(payload).digest("hex");
+  const payload = Object.entries(params)
+    .filter(([, value]) => value !== undefined && value !== "")
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+
+  return createHash("sha1").update(`${payload}${apiSecret}`).digest("hex");
 }
 
 export async function POST(request: Request) {
@@ -84,19 +91,27 @@ export async function POST(request: Request) {
 
   if (file.size > MAX_IMAGE_SIZE_BYTES) {
     return NextResponse.json(
-      { message: "Image must be 5MB or smaller." },
+      { message: "Image must be 1MB or smaller." },
       { status: 400 },
     );
   }
 
   const timestamp = Math.floor(Date.now() / 1000);
-  const signature = buildCloudinarySignature(folder, timestamp, apiSecret);
+  const uploadParams = {
+    folder,
+    format: CLOUDINARY_UPLOAD_FORMAT,
+    timestamp,
+    transformation: CLOUDINARY_UPLOAD_TRANSFORMATION,
+  };
+  const signature = buildCloudinarySignature(uploadParams, apiSecret);
   const cloudinaryForm = new FormData();
 
   cloudinaryForm.append("file", file);
   cloudinaryForm.append("api_key", apiKey);
   cloudinaryForm.append("timestamp", String(timestamp));
   cloudinaryForm.append("folder", folder);
+  cloudinaryForm.append("format", CLOUDINARY_UPLOAD_FORMAT);
+  cloudinaryForm.append("transformation", CLOUDINARY_UPLOAD_TRANSFORMATION);
   cloudinaryForm.append("signature", signature);
 
   try {
