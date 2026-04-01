@@ -264,3 +264,794 @@ button {
   background-size: 200% 100%;
   animation: shimmer 1.8s linear infinite;
 }
+
+.balady-nav-spacer {
+  width: 100%;
+  flex: none;
+}
+
+.balady-nav-root {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  direction: rtl;
+  background: #ffffff;
+  color: #22313f;
+  isolation: isolate;
+}
+
+.balady-nav-root a,
+.balady-nav-root button {
+  cursor: pointer;
+}
+
+.balady-nav-shell {
+  width: min(100%, 1320px);
+  margin: 0 auto;
+}
+
+.balady-header {
+  position: relative;
+  background: #ffffff;
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.balady-header.scrolled {
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.balady-gov-strip {
+  border-top: 1px solid #273646;
+  border-bottom: 1px solid #d8dde4;
+  background: #ffffff;
+}
+
+.balady-gov-strip-inner {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 18px;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.balady-gov-message,
+.balady-gov-tools,
+.balady-main-nav-group,
+.balady-main-nav-actions,
+.balady-brand-link,
+.balady-search-link,
+.balady-mobile-search-link {
+  display: flex;
+  align-items: center;
+}
+
+.balady-gov-tools a,
+.balady-main-link,
+.balady-mobile-list-link,
+.balady-mobile-service-link,
+.balady-mobile-search-link,
+.balady-mobile-link-block {
+  color: inherit;
+  text-decoration: none;
+}
+
+.balady-gov-message {
+  gap: 10px;
+  font-weight: 700;
+  color: #2f3b47;
+}
+
+.balady-gov-message-text {
+  white-space: nowrap;
+}
+
+.balady-gov-tools {
+  gap: 18px;
+  font-weight: 700;
+  color: #2f3b47;
+}
+
+.balady-tool-link,
+.balady-main-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.balady-gov-verify {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: #20845d;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.balady-gov-verify.active .balady-icon-chevron {
+  transform: rotate(180deg);
+}
+
+.balady-gov-badge {
+  display: inline-flex;
+  height: 10px;
+  width: 14px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #37a864 0%, #106642 100%);
+}
+
+.balady-mobile-verify-toggle,
+.balady-mobile-sections {
+  display: none;
+}
+
+.balady-verify-panel {
+  border-bottom: 1px solid #d8dde4;
+  background: #f2f4f6;
+}
+
+.balady-verify-panel.open {
+  display: block;
+}
+
+.balady-verify-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px;
+}
+
+.balady-verify-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.balady-verify-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 22px;
+  color: #324152;
+  background: transparent;
+}
+
+.balady-verify-item + .balady-verify-item {
+  border-top: 1px solid rgba(203, 213, 225, 0.75);
+}
+
+.balady-verify-card-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  text-align: right;
+}
+
+.balady-verify-card-copy h3,
+.balady-verify-badge span,
+.balady-verify-badge p {
+  margin: 0;
+}
+
+.balady-verify-card-copy h3 {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #1d2c39;
+}
+
+.balady-verify-card-copy p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #5d6c7a;
+}
+
+.balady-verify-card-visual,
+.balady-verify-badge-mark {
+  color: #218860;
+}
+
+.balady-verify-badge {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 14px 18px;
+  text-align: right;
+  color: #455667;
+  border: 1px solid #e0e7ee;
+}
+
+.balady-verify-badge-mark {
+  display: inline-flex;
+  align-items: center;
+}
+
+.balady-verify-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #20845d;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.balady-main-nav {
+  border-bottom: 1px solid #dfe4ea;
+  background: #ffffff;
+}
+
+.balady-main-nav-desktop,
+.balady-main-nav-mobile {
+  min-height: 76px;
+  padding: 0 18px;
+}
+
+.balady-main-nav-desktop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.balady-main-nav-mobile {
+  display: none;
+}
+
+.balady-main-nav-group {
+  gap: 28px;
+}
+
+.balady-main-nav-actions {
+  gap: 20px;
+}
+
+.balady-brand-link {
+  gap: 18px;
+}
+
+.balady-logo {
+  display: block;
+}
+
+.balady-primary-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.balady-nav-item {
+  position: relative;
+}
+
+.balady-main-link {
+  height: 76px;
+  padding: 0 18px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2f3b47;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.balady-main-link:hover {
+  color: #14865c;
+}
+
+.balady-main-link-active {
+  background: #14865c;
+  color: #ffffff;
+}
+
+.balady-main-link-active svg {
+  color: #d4f3e4;
+}
+
+.balady-icon {
+  flex: none;
+  height: 18px;
+  width: 18px;
+}
+
+.balady-icon-small {
+  height: 15px;
+  width: 15px;
+}
+
+.balady-icon-chevron {
+  height: 13px;
+  width: 13px;
+  transition: transform 0.2s ease;
+}
+
+.balady-nav-item.open .balady-icon-chevron {
+  transform: rotate(180deg);
+}
+
+.balady-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: min(900px, calc(100vw - 36px));
+  background: #ffffff;
+  border: 1px solid #dfe4ea;
+  border-top: 4px solid #14865c;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
+  z-index: 100;
+}
+
+.balady-nav-item.open .balady-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.balady-dropdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  padding: 26px 28px 20px;
+}
+
+.balady-dropdown-grid-list {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.balady-dropdown-section {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  text-align: right;
+}
+
+.balady-dropdown-title {
+  padding-bottom: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #14865c;
+}
+
+.balady-dropdown-link {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #2f3b47;
+  text-decoration: none;
+}
+
+.balady-dropdown-link:hover {
+  color: #14865c;
+}
+
+.balady-dropdown-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 28px 24px;
+}
+
+.balady-dropdown-cta,
+.balady-mobile-panel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  background: #14865c;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.balady-dropdown-cta .balady-icon-chevron,
+.balady-mobile-panel-cta .balady-icon-chevron {
+  transform: rotate(90deg);
+}
+
+.balady-dropdown-highlight,
+.balady-mobile-panel-highlight {
+  font-size: 18px;
+  font-weight: 700;
+  color: #14865c;
+  text-decoration: none;
+}
+
+.balady-business-button,
+.balady-search-link,
+.balady-menu-button,
+.balady-mobile-search-link {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.balady-business-button {
+  gap: 8px;
+  border-radius: 4px;
+  background: #14865c;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.balady-search-link {
+  gap: 6px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.balady-business-arrow {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.balady-verify-icon,
+.balady-digital-badge-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.balady-inline-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+@media (max-width: 1024px) {
+  .balady-main-link {
+    padding: 0 12px;
+  }
+
+  .balady-dropdown {
+    width: min(760px, calc(100vw - 32px));
+  }
+}
+
+@media (max-width: 820px) {
+  .balady-gov-strip-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) 60px minmax(0, 1fr);
+    gap: 0;
+    padding: 0;
+    font-size: 11px;
+  }
+
+  .balady-gov-message,
+  .balady-gov-tools,
+  .balady-mobile-verify-toggle {
+    min-height: 42px;
+    padding: 0 10px;
+    border-left: 1px solid #d8dde4;
+  }
+
+  .balady-gov-message {
+    gap: 6px;
+    justify-content: center;
+    line-height: 1.35;
+  }
+
+  .balady-gov-message span:first-child {
+    text-align: right;
+  }
+
+  .balady-gov-verify-desktop {
+    display: none;
+  }
+
+  .balady-mobile-verify-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #2b8e67;
+    font-size: 12px;
+    font-weight: 700;
+    border: 0;
+    background: transparent;
+  }
+
+  .balady-mobile-verify-toggle.active .balady-icon-chevron {
+    transform: rotate(180deg);
+  }
+
+  .balady-gov-tools {
+    gap: 10px;
+    justify-content: center;
+    border-left: 0;
+  }
+
+  .balady-tool-link span {
+    display: inline;
+  }
+
+  .balady-verify-panel {
+    display: block;
+    background: #f2f4f6;
+  }
+
+  .balady-verify-content {
+    gap: 12px;
+    padding: 12px 14px 16px;
+  }
+
+  .balady-verify-item,
+  .balady-verify-badge {
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .balady-verify-item {
+    align-items: flex-start;
+    background: transparent;
+  }
+
+  .balady-verify-card-copy h3 {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .balady-verify-card-copy p {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+
+  .balady-verify-badge {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    font-size: 11px;
+  }
+
+  .balady-main-nav-desktop {
+    display: none;
+  }
+
+  .balady-main-nav-mobile {
+    display: block;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .balady-mobile-brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    direction: ltr;
+    padding: 14px 12px 10px;
+    border-bottom: 1px solid #dfe4ea;
+  }
+
+  .balady-mobile-brand-link {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .balady-mobile-brand-menu {
+    color: #334155;
+  }
+
+  .balady-menu-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .balady-mobile-sections.open {
+    display: block;
+    border-bottom: 1px solid #dfe4ea;
+    background: #ffffff;
+  }
+
+  .balady-mobile-sections-inner {
+    padding: 0 12px 16px;
+  }
+
+.balady-mobile-section,
+.balady-mobile-link-block {
+  display: block;
+  padding-top: 8px;
+}
+
+.balady-mobile-section-trigger,
+.balady-mobile-link-block {
+  display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 2px 8px;
+    background: transparent;
+    border: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.balady-mobile-section-trigger.active,
+.balady-mobile-section.active .balady-mobile-section-trigger {
+  background: #188655;
+  color: #ffffff;
+  border-radius: 2px;
+  padding: 8px 12px;
+}
+
+.balady-mobile-section-trigger.open,
+.balady-mobile-section-trigger.active.open {
+  background: #188655;
+  color: #ffffff;
+  border-radius: 2px;
+  padding: 8px 12px;
+}
+
+.balady-mobile-section-trigger.active .balady-icon-chevron,
+.balady-mobile-section.active .balady-mobile-section-trigger .balady-icon-chevron,
+.balady-mobile-section-trigger.open .balady-icon-chevron,
+.balady-mobile-section-trigger.active.open .balady-icon-chevron {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.balady-mobile-section-trigger.open .balady-icon-chevron,
+.balady-mobile-section-trigger.active.open .balady-icon-chevron {
+  transform: rotate(180deg);
+}
+
+.balady-mobile-section-panel {
+  display: none;
+  padding: 16px 0 4px;
+  }
+
+  .balady-mobile-section-panel.open {
+    display: block;
+  }
+
+  .balady-mobile-services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 2px 4px 8px;
+  }
+
+  .balady-mobile-service-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: right;
+  }
+
+  .balady-mobile-service-column h3 {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.35;
+    color: #188655;
+  }
+
+  .balady-mobile-service-link {
+    font-size: 11px;
+    line-height: 1.7;
+    color: #111827;
+  }
+
+  .balady-mobile-links-list {
+    display: grid;
+    gap: 8px;
+    padding: 4px 0 10px;
+  }
+
+  .balady-mobile-list-link {
+    padding: 6px 4px;
+    font-size: 14px;
+    color: #22313f;
+  }
+
+  .balady-mobile-panel-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 8px 0;
+  }
+
+  .balady-mobile-business-button {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 3px;
+    background: #188655;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .balady-mobile-search-link {
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 12px 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #263544;
+  }
+
+.balady-mobile-link-label {
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+}
+
+@media (max-width: 560px) {
+  .balady-verify-badge {
+    align-items: flex-start;
+  }
+
+  .balady-mobile-services-grid {
+    gap: 10px;
+    padding-inline: 2px;
+  }
+
+  .balady-mobile-service-column h3 {
+    font-size: 12px;
+  }
+
+  .balady-mobile-service-link {
+    font-size: 10px;
+  }
+
+  .balady-mobile-panel-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .balady-mobile-panel-highlight,
+  .balady-mobile-panel-cta {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media print {
+  .balady-nav-spacer,
+  .balady-gov-strip,
+  .balady-verify-panel,
+  .balady-main-nav,
+  .balady-mobile-sections {
+    display: none !important;
+  }
+}
