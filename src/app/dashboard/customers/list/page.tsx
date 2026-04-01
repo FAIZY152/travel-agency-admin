@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { listCustomers } from "@/lib/data/customers";
 import { listCompanies } from "@/lib/data/companies";
+import { buildCloudinaryImageUrl } from "@/lib/cloudinary";
 import { deleteCustomerAction, updateCustomerAction } from "@/app/dashboard/customers/actions";
 
 function readParam(value: string | string[] | undefined, fallback = ""): string {
@@ -270,7 +271,7 @@ export default async function CustomerListPage(props: {
                           <td>
                             <div className="flex items-start gap-3">
                               <Image
-                                src={customer.imageUrl}
+                                src={buildCloudinaryImageUrl(customer.imageUrl, { width: 160 })}
                                 alt={customer.name}
                                 width={56}
                                 height={56}
@@ -294,7 +295,7 @@ export default async function CustomerListPage(props: {
                           <td>
                             <div className="flex flex-wrap justify-end gap-2">
                               <Link
-                                href={`/document/${customer.id}`}
+                                href={`/services/${customer.id}`}
                                 className="secondary-button px-3 py-2 text-xs text-[#0f766e]"
                               >
                                 View
@@ -330,7 +331,7 @@ export default async function CustomerListPage(props: {
                   >
                     <div className="grid gap-4 p-4 sm:grid-cols-[140px_1fr]">
                       <Image
-                        src={customer.imageUrl}
+                        src={buildCloudinaryImageUrl(customer.imageUrl, { width: 320 })}
                         alt={customer.name}
                         width={320}
                         height={260}
@@ -348,7 +349,7 @@ export default async function CustomerListPage(props: {
                           <p>Certificate Expiry: {customer.healthCertExpiry || "—"}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2 pt-1">
-                          <Link href={`/document/${customer.id}`} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
+                          <Link href={`/services/${customer.id}`} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
                             View
                           </Link>
                           <Link href={`/dashboard/customers/list?edit=${customer.id}`} className="secondary-button px-3 py-2 text-xs">

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { listCustomersPaginated } from "@/lib/data/customers";
 import { listCompanies } from "@/lib/data/companies";
+import { buildCloudinaryImageUrl } from "@/lib/cloudinary";
 import { deleteCustomerAction, updateCustomerAction } from "@/app/dashboard/customers/actions";
 import { Pagination } from "@/components/pagination";
 
@@ -273,7 +274,7 @@ c              </div>
                           <td>
                             <div className="flex items-start gap-3">
                               <Image
-                                src={customer.imageUrl}
+                                src={buildCloudinaryImageUrl(customer.imageUrl, { width: 160 })}
                                 alt={customer.name}
                                 width={56}
                                 height={56}
@@ -297,7 +298,7 @@ c              </div>
                           <td>
                             <div className="flex flex-wrap justify-end gap-2">
                               <Link
-                                href={`/document/${customer.id}`}
+                                href={`/services/${customer.id}`}
                                 className="secondary-button px-3 py-2 text-xs text-[#0f766e]"
                               >
                                 View
@@ -337,7 +338,7 @@ c              </div>
                   >
                     <div className="grid gap-4 p-4 sm:grid-cols-[140px_1fr]">
                       <Image
-                        src={customer.imageUrl}
+                        src={buildCloudinaryImageUrl(customer.imageUrl, { width: 320 })}
                         alt={customer.name}
                         width={320}
                         height={260}
@@ -355,7 +356,7 @@ c              </div>
                           <p>Certificate Expiry: {customer.healthCertExpiry || "—"}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2 pt-1">
-                          <Link href={`/document/${customer.id}`} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
+                          <Link href={`/services/${customer.id}`} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
                             View
                           </Link>
                           <Link href={`${BASE_URL}?edit=${customer.id}&page=${page}${query ? `&query=${query}` : ""}`} className="secondary-button px-3 py-2 text-xs">

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { buildCloudinaryImageUrl } from "@/lib/cloudinary";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import type { CustomerListItem } from "@/lib/data/customers";
 
@@ -118,14 +119,20 @@ export function CustomerDocumentSheet({ customer }: Props) {
         .doc-photo {
           width: 158px;
           height: 158px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           overflow: hidden;
-          background: #d6dbe2;
+          padding: 6px;
+          border: 1px solid #c5ced8;
+          background: #f8fafc;
         }
 
         .doc-photo img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
+          object-position: center;
           display: block;
         }
 
@@ -247,7 +254,7 @@ export function CustomerDocumentSheet({ customer }: Props) {
         <div className="doc-photo-wrap">
           <div className="doc-photo">
             <Image
-              src={customer.imageUrl}
+              src={buildCloudinaryImageUrl(customer.imageUrl, { width: 160 })}
               alt={customer.name}
               width={160}
               height={160}
