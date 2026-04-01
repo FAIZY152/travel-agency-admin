@@ -397,7 +397,7 @@ export default async function DashboardPage() {
                       </div>
                     </div>
                     <Link
-                      href={`/document/${customer.id}`}
+                      href={`/services/${customer.id}`}
                       className="text-xs font-semibold text-amber-700 transition hover:text-amber-800"
                     >
                       View →
