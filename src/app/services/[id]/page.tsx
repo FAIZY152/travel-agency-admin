@@ -198,7 +198,6 @@ export default async function ServicesPage({ params }: PageProps) {
             </div>
           </div>
         </main>
-
         <footer className="balady-page-footer">
           <div className="balady-document-shell balady-page-footer-inner">
             <div className="balady-page-footer-copy">
@@ -214,12 +213,12 @@ export default async function ServicesPage({ params }: PageProps) {
             <div className="balady-page-footer-badge">
               <div className="balady-page-footer-badge-mark">
                 <Image
-                  src="/logo.svg"
+                  src="/"
                   alt="Balady"
                   width={68}
                   height={30}
                 />
-                <span className="balady-page-footer-brand-text">balady</span>
+                {/* <span className="balady-page-footer-brand-text">balady</span> */}
               </div>
               <p>مسجل لدى هيئة الحكومة الرقمية</p>
             </div>

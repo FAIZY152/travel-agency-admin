@@ -28,6 +28,7 @@ export type BaladyPanel = {
   highlightLink?: BaladyLink;
 };
 
+ 
 export type BaladyNavItem = {
   id: string;
   label: string;
@@ -59,6 +60,7 @@ export const BALADY_TOP_TOOLS: BaladyTopTool[] = [
     href: "#",
     icon: "gear",
   },
+
   {
     id: "accessibility",
     label: "أدوات سهولة الوصول",
