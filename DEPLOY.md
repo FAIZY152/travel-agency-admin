@@ -97,7 +97,6 @@ CREATE TABLE customers (
   health_cert_issue_hijri TEXT,
   health_cert_issue_gregorian TEXT,
   edu_program_end TEXT,
-  edu_program_end_gregorian TEXT,
   edu_program_type TEXT,
   facility_name TEXT,
   license_number TEXT,
