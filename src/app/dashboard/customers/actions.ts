@@ -53,7 +53,6 @@ function parseCustomerForm(formData: FormData) {
     healthCertIssueHijri: String(formData.get("healthCertIssueHijri") ?? ""),
     healthCertIssueGregorian: String(formData.get("healthCertIssueGregorian") ?? ""),
     eduProgramEnd: String(formData.get("eduProgramEnd") ?? ""),
-    eduProgramEndGregorian: String(formData.get("eduProgramEndGregorian") ?? ""),
     eduProgramType: String(formData.get("eduProgramType") ?? ""),
     facilityName: String(formData.get("facilityName") ?? ""),
     licenseNumber: String(formData.get("licenseNumber") ?? ""),

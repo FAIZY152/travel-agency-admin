@@ -191,10 +191,6 @@ export default async function CustomerListPage(props: {
                 <label htmlFor="e-eduProgramEnd" className="field-label">Educational program end date (Hijri)</label>
                 <input id="e-eduProgramEnd" name="eduProgramEnd" defaultValue={editCustomer.eduProgramEnd || ""} className="field-input" />
               </div>
-              <div>
-                <label htmlFor="e-eduProgramEndGregorian" className="field-label">Educational program end date (Gregorian)</label>
-                <input id="e-eduProgramEndGregorian" name="eduProgramEndGregorian" defaultValue={editCustomer.eduProgramEndGregorian || ""} className="field-input" />
-              </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
