@@ -105,6 +105,10 @@ export function CustomerDocumentSheet({ customer }: Props) {
     <>
       <style>{`
         .doc-root {
+          --doc-field-bg: #f2f2f2;
+          --doc-field-border: #a9b2bc;
+          --doc-field-label: #222222;
+          --doc-field-text: #77736b;
           direction: rtl;
           width: min(100%, 1100px);
           margin: 0 auto;
@@ -199,31 +203,34 @@ export function CustomerDocumentSheet({ customer }: Props) {
           display: flex;
           flex-direction: column;
           gap: 8px;
+          color: var(--doc-field-label);
         }
 
         .doc-label {
           font-size: 15px;
-          font-weight: 700;
-          color: #4d5b68;
+          font-weight: 500;
+          color: var(--doc-field-label);
           text-align: right;
           line-height: 1.35;
         }
 
         .doc-value {
           min-height: 46px;
-          border: 1px solid #c6d1db;
+          border: 1px solid var(--doc-field-border);
           border-radius: 2px;
-          background: #fcfeff;
+          background: var(--doc-field-bg);
           padding: 10px 14px;
           font-size: 15px;
-          font-weight: 700;
-          color: #6b7785;
+          font-weight: 500;
+          color: var(--doc-field-text);
           text-align: right;
           display: flex;
           align-items: center;
           justify-content: flex-start;
           line-height: 1.35;
           word-break: break-word;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
         }
 
         @media (max-width: 640px) {
