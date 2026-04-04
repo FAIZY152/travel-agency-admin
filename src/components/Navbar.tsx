@@ -157,7 +157,6 @@
         </>
       );
     }
-
     return (
       <>
         المواقع الإلكترونية الحكومية تستخدم
@@ -166,7 +165,6 @@
       </>
     );
   }
-
   function renderVerifyDescription(card: BaladyVerifyCard) {
     if (card.id === "gov-domain") {
       return (
@@ -603,9 +601,7 @@
                         {...getAnchorProps(tool.href)}
                       >
                         {renderTopToolIcon(tool)}
-                        <p className={tool.id === "accessibility" ? "upper-txt" : undefined}>
-                          {tool.label}
-                        </p>
+                        <p className="upper-txt">{tool.label}</p>
                       </a>
                     ),
                   )}
@@ -678,7 +674,14 @@
             <div className="balady-nav-shell balady-main-nav-mobile">
               <div className="balady-mobile-brand-row">
                 <a href={BALADY_BRAND_LINK} className="balady-mobile-brand-link" aria-label="Balady" {...getAnchorProps(BALADY_BRAND_LINK)}>
-                  <Image src="/logo.svg" alt="Balady" width={112} height={50} priority className="balady-logo" />
+                  <Image
+                    src={scrolled ? "/logo-scrolled.svg" : "/logo.svg"}
+                    alt="Balady"
+                    width={112}
+                    height={50}
+                    priority
+                    className="balady-logo"
+                  />
                 </a>
 
                 <button

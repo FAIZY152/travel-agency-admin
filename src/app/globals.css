@@ -394,6 +394,18 @@ button {
   justify-content: center;
 }
 
+.balady-tool-link-accessibility {
+  min-height: 34px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: transparent;
+}
+
+.balady-tool-link-accessibility:hover,
+.balady-tool-link-accessibility:focus-visible {
+  background: #e6e9ee;
+}
+
 .balady-settings-trigger {
   min-height: 34px;
   padding: 0 9px;
@@ -1067,8 +1079,6 @@ button {
 
   .balady-tool-link-accessibility {
     padding: 5px 8px;
-    border-radius: 4px;
-    background: #e6e9ee;
   }
 
   .balady-tool-link-settings {
