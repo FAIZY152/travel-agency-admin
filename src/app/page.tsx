@@ -40,7 +40,7 @@ export default function Home() {
           --dx: ${(Math.random() - 0.5) * 40}px;
           --dy: ${-(15 + Math.random() * 40)}px;
           --dx2: ${(Math.random() - 0.5) * 30}px;
-          --dy2: ${-(30 + Math.random() * 60)}px;
+          --dy2: ${-(30 + Math.random() * 60)}
         `;
         sceneRef.current.appendChild(p);
       }

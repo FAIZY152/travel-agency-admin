@@ -3,6 +3,7 @@ import Link from "next/link";
 import { listCustomers } from "@/lib/data/customers";
 import { listCompanies } from "@/lib/data/companies";
 import { buildCloudinaryImageUrl } from "@/lib/cloudinary";
+import { getCustomerDocumentHref } from "@/lib/document-view-route";
 import { deleteCustomerAction, updateCustomerAction } from "@/app/dashboard/customers/actions";
 
 function readParam(value: string | string[] | undefined, fallback = ""): string {
@@ -291,7 +292,7 @@ export default async function CustomerListPage(props: {
                           <td>
                             <div className="flex flex-wrap justify-end gap-2">
                               <Link
-                                href={`/services/${customer.id}`}
+                                href={getCustomerDocumentHref(customer.id)}
                                 className="secondary-button px-3 py-2 text-xs text-[#0f766e]"
                               >
                                 View
@@ -345,7 +346,7 @@ export default async function CustomerListPage(props: {
                           <p>Certificate Expiry: {customer.healthCertExpiry || "—"}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2 pt-1">
-                          <Link href={`/services/${customer.id}`} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
+                          <Link href={getCustomerDocumentHref(customer.id)} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
                             View
                           </Link>
                           <Link href={`/dashboard/customers/list?edit=${customer.id}`} className="secondary-button px-3 py-2 text-xs">

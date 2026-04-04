@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LogoutButton } from "@/components/logout-button";
 import { getDashboardStats } from "@/lib/data/dashboard";
+import { getCustomerDocumentHref } from "@/lib/document-view-route";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-US", {
@@ -397,7 +398,7 @@ export default async function DashboardPage() {
                       </div>
                     </div>
                     <Link
-                      href={`/services/${customer.id}`}
+                      href={getCustomerDocumentHref(customer.id)}
                       className="text-xs font-semibold text-amber-700 transition hover:text-amber-800"
                     >
                       View →

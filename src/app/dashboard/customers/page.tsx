@@ -3,6 +3,7 @@ import Link from "next/link";
 import { listCustomersPaginated } from "@/lib/data/customers";
 import { listCompanies } from "@/lib/data/companies";
 import { buildCloudinaryImageUrl } from "@/lib/cloudinary";
+import { getCustomerDocumentHref } from "@/lib/document-view-route";
 import { deleteCustomerAction, updateCustomerAction } from "@/app/dashboard/customers/actions";
 import { Pagination } from "@/components/pagination";
 
@@ -294,7 +295,7 @@ c              </div>
                           <td>
                             <div className="flex flex-wrap justify-end gap-2">
                               <Link
-                                href={`/services/${customer.id}`}
+                                href={getCustomerDocumentHref(customer.id)}
                                 className="secondary-button px-3 py-2 text-xs text-[#0f766e]"
                               >
                                 View
@@ -352,7 +353,7 @@ c              </div>
                           <p>Certificate Expiry: {customer.healthCertExpiry || "—"}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2 pt-1">
-                          <Link href={`/services/${customer.id}`} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
+                          <Link href={getCustomerDocumentHref(customer.id)} className="secondary-button px-3 py-2 text-xs text-[#0f766e]">
                             View
                           </Link>
                           <Link href={`${BASE_URL}?edit=${customer.id}&page=${page}${query ? `&query=${query}` : ""}`} className="secondary-button px-3 py-2 text-xs">

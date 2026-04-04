@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getCustomerDocumentHref } from "@/lib/document-view-route";
 
 type PageProps = {
   params: Promise<{
@@ -9,5 +10,5 @@ type PageProps = {
 export default async function DocumentRedirectPage({ params }: PageProps) {
   const { id } = await params;
 
-  redirect(`/services/${id}`);
+  redirect(getCustomerDocumentHref(id));
 }
