@@ -3,10 +3,26 @@
   import Image from "next/image";
   import { IBM_Plex_Sans_Arabic } from "next/font/google";
   import { type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
+  import { BiSolidBellOff } from "react-icons/bi";
+  import { BsBookmarkPlusFill } from "react-icons/bs";
+  import { FaCalendarDays } from "react-icons/fa6";
+  import { FiMenu } from "react-icons/fi";
+  import { GoChevronDown, GoGear } from "react-icons/go";
+  import { PiPersonLight } from "react-icons/pi";
+  import { MdOutlineBookmarkAdd } from "react-icons/md";
+
+  import {
+    LuExternalLink,
+    LuLink2,
+    LuLockKeyhole,
+    LuPrinter,
+    LuSearch,
+  } from "react-icons/lu";
   import {
     BALADY_BRAND_LINK,
     BALADY_BUSINESS_LINK,
     BALADY_NAV_ITEMS,
+    BALADY_SETTINGS_MENU,
     BALADY_SEARCH_LINK,
     BALADY_TOP_TOOLS,
     BALADY_VERIFY_BADGE,
@@ -14,6 +30,7 @@
     BALADY_VERIFY_LINK,
     type BaladyLink,
     type BaladyNavItem,
+    type BaladySettingsItem,
     type BaladyTopTool,
     type BaladyVerifyCard,
   } from "@/lib/balady-navigation";
@@ -25,93 +42,62 @@
 
   
   function SearchIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-icon">
-        <circle cx="10.5" cy="10.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M15 15l4.5 4.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      </svg>
-    );
+    return <LuSearch aria-hidden="true" className="balady-icon" strokeWidth={2} />;
   }
 
   function GearIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-icon balady-icon-small">
-        <path
-          d="M12 8.4a3.6 3.6 0 1 0 0 7.2a3.6 3.6 0 0 0 0-7.2Zm8 3.6-.95-.55a7.9 7.9 0 0 0-.45-1.1l.37-1.03a1 1 0 0 0-.23-1.05l-1.1-1.1a1 1 0 0 0-1.05-.23l-1.03.37c-.35-.17-.72-.32-1.1-.45L14 3.9a1 1 0 0 0-.87-.5h-2.26a1 1 0 0 0-.87.5l-.55.95c-.38.13-.75.28-1.1.45l-1.03-.37a1 1 0 0 0-1.05.23l-1.1 1.1a1 1 0 0 0-.23 1.05l.37 1.03c-.17.35-.32.72-.45 1.1l-.95.55a1 1 0 0 0-.5.87v2.26a1 1 0 0 0 .5.87l.95.55c.13.38.28.75.45 1.1l-.37 1.03a1 1 0 0 0 .23 1.05l1.1 1.1a1 1 0 0 0 1.05.23l1.03-.37c.35.17.72.32 1.1.45l.55.95a1 1 0 0 0 .87.5h2.26a1 1 0 0 0 .87-.5l.55-.95c.38-.13.75-.28 1.1-.45l1.03.37a1 1 0 0 0 1.05-.23l1.1-1.1a1 1 0 0 0 .23-1.05l-.37-1.03c.17-.35.32-.72.45-1.1l.95-.55a1 1 0 0 0 .5-.87v-2.26a1 1 0 0 0-.5-.87Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.25"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
+    return <GoGear aria-hidden="true" className="balady-icon balady-icon-small balady-icon-gear" />;
   }
 
   function AccessIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-icon balady-icon-small">
-        <circle cx="12" cy="4.8" r="1.9" fill="currentColor" />
-        <path
-          d="M12 7.3v4.2m0 0 3.8 2m-3.8-2-3.8 2M12 11.5l-2.4 7.2m2.4-7.2 2.4 7.2"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
+    return <PiPersonLight aria-hidden="true" className="balady-icon balady-icon-access" />;
   }
 
   function ChevronDownIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-icon balady-icon-chevron">
-        <path d="m7 10 5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
+    return <GoChevronDown aria-hidden="true" className="balady-icon balady-icon-chevron" />;
   }
 
   function MenuIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-menu-icon">
-        <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
-      </svg>
-    );
+    return <FiMenu aria-hidden="true" className="balady-menu-icon" />;
+  }
+
+  function PrintIcon() {
+    return <LuPrinter aria-hidden="true" className="balady-settings-icon balady-settings-icon-print" strokeWidth={1.9} />;
+  }
+
+  function BookmarkIcon() {
+    return <MdOutlineBookmarkAdd aria-hidden="true" className="balady-settings-icon balady-settings-icon-bookmark" />;
+  }
+
+  function NotificationsIcon() {
+    return <BiSolidBellOff aria-hidden="true" className="balady-settings-icon balady-settings-icon-notifications" />;
+  }
+
+  function CalendarIcon() {
+    return <FaCalendarDays aria-hidden="true" className="balady-settings-icon balady-settings-icon-calendar" />;
   }
 
   function LinkCircleIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-verify-icon">
-        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M9.5 13.6 8.1 15a2.4 2.4 0 1 0 3.4 3.4l1.9-1.9m1.1-6.1 1.4-1.4A2.4 2.4 0 1 0 12.5 5.6l-1.9 1.9m-1.3 6 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
+    return <LuLink2 aria-hidden="true" className="balady-verify-icon" strokeWidth={1.9} />;
   }
 
   function LockCircleIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-verify-icon">
-        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M9.3 11V9.6a2.7 2.7 0 1 1 5.4 0V11m-5.8 0h6.2v5.2H8.9z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
+    return <LuLockKeyhole aria-hidden="true" className="balady-verify-icon" strokeWidth={1.9} />;
   }
 
   function DigitalBadgeIcon() {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-digital-badge-icon">
-        <path d="M12 3 7 5.8v5.5c0 4.1 2.3 7.8 5 9.7 2.7-1.9 5-5.6 5-9.7V5.8L12 3Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path d="M9.4 11.6h5.2M9.4 8.8h5.2M9.4 14.4h3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M8.2 5.2v7.6l3.8 3.8" fill="none" stroke="#17b3c1" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M15.8 5.2v7.6L12 16.6" fill="none" stroke="#6c4fd3" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M6.4 8.1 11 3.5m6.6 4.6L13 3.5M6.4 15.9l4.6 4.6m6.6-4.6L13 20.5" fill="none" stroke="#17b3c1" strokeWidth="1.4" strokeLinecap="round" />
+        <path d="M9.4 9.2h5.2m-5.2 3h5.2" fill="none" stroke="#6c4fd3" strokeWidth="1.4" strokeLinecap="round" />
       </svg>
     );
   }
 
   function ExternalLinkIcon() {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="balady-inline-icon">
-        <path d="M14 5h5v5m-1.4-3.6L9 15m7 4H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
+    return <LuExternalLink aria-hidden="true" className="balady-inline-icon" strokeWidth={2} />;
   }
 
   function isExternalHref(href: string) {
@@ -137,12 +123,68 @@
     return <AccessIcon />;
   }
 
+  function renderSettingsIcon(item: BaladySettingsItem) {
+    if (item.icon === "print") {
+      return <PrintIcon />;
+    }
+
+    if (item.icon === "bookmark") {
+      return <BookmarkIcon />;
+    }
+
+    if (item.icon === "notifications") {
+      return <NotificationsIcon />;
+    }
+
+    return <CalendarIcon />;
+  }
+
   function renderVerifyIcon(card: BaladyVerifyCard) {
     if (card.icon === "lock") {
       return <LockCircleIcon />;
     }
 
     return <LinkCircleIcon />;
+  }
+
+  function renderVerifyTitle(card: BaladyVerifyCard) {
+    if (card.id === "gov-domain") {
+      return (
+        <>
+          روابط المواقع الإلكترونية الرسمية السعودية
+          <br />
+          تنتهي بـ <span className="balady-verify-highlight">gov.sa</span>
+        </>
+      );
+    }
+
+    return (
+      <>
+        المواقع الإلكترونية الحكومية تستخدم
+        <br />
+        بروتوكول <span className="balady-verify-highlight">HTTPS</span> للتشفير و الأمان.
+      </>
+    );
+  }
+
+  function renderVerifyDescription(card: BaladyVerifyCard) {
+    if (card.id === "gov-domain") {
+      return (
+        <>
+          جميع روابط المواقع الرسمية التابعة للجهات الحكومية في المملكة
+          <br />
+          العربية السعودية تنتهي بـ <span className="balady-verify-highlight">gov.sa</span>
+        </>
+      );
+    }
+
+    return (
+      <>
+        المواقع الإلكترونية الآمنة في المملكة العربية السعودية تستخدم
+        <br />
+        بروتوكول <span className="balady-verify-highlight">HTTPS</span> المشفر.
+      </>
+    );
   }
 
   function renderLinkArrow() {
@@ -259,9 +301,22 @@
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [verifyOpen, setVerifyOpen] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
     const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
     const [scrolled, setScrolled] = useState(false);
     const [navHeight, setNavHeight] = useState(0);
+    const [dateMode, setDateMode] = useState<"gregorian" | "hijri">(() => {
+      if (typeof window === "undefined") {
+        return "gregorian";
+      }
+
+      const savedDateMode = window.localStorage.getItem("balady-date-mode");
+      return savedDateMode === "gregorian" || savedDateMode === "hijri" ? savedDateMode : "gregorian";
+    });
+
+    useEffect(() => {
+      document.documentElement.dataset.baladyDateMode = dateMode;
+    }, [dateMode]);
 
     useLayoutEffect(() => {
       const root = rootRef.current;
@@ -290,10 +345,17 @@
       const resetOverlayState = () => {
         setOpenDropdown(null);
         setVerifyOpen(false);
+        setSettingsOpen(false);
       };
 
       const handleScroll = () => {
-        setScrolled(window.scrollY > 10);
+        const isScrolled = window.scrollY > 10;
+        setScrolled(isScrolled);
+
+        if (isScrolled && window.matchMedia("(max-width: 820px)").matches) {
+          setVerifyOpen(false);
+          setSettingsOpen(false);
+        }
       };
 
       const handlePointerDown = (event: MouseEvent) => {
@@ -349,6 +411,7 @@
         setMobileExpanded(null);
         setOpenDropdown(null);
         setVerifyOpen(false);
+        setSettingsOpen(false);
       };
 
       handleViewportChange(media);
@@ -359,26 +422,80 @@
       };
     }, []);
 
-    useEffect(() => {
-      if (!scrolled) {
-        return;
-      }
-
-      if (!window.matchMedia("(max-width: 820px)").matches) {
-        return;
-      }
-
-      setVerifyOpen(false);
-    }, [scrolled]);
-
     const toggleVerifyPanel = () => {
       setOpenDropdown(null);
+      setSettingsOpen(false);
       setVerifyOpen((current) => !current);
     };
 
     const toggleDesktopDropdown = (itemId: string) => {
       setVerifyOpen(false);
+      setSettingsOpen(false);
       setOpenDropdown((current) => (current === itemId ? null : itemId));
+    };
+
+    const toggleSettingsMenu = () => {
+      setOpenDropdown(null);
+      setVerifyOpen(false);
+      setSettingsOpen((current) => !current);
+    };
+
+    const handleSavePage = () => {
+      const blob = new Blob([document.documentElement.outerHTML], {
+        type: "text/html;charset=utf-8",
+      });
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "balady-health-certificate.html";
+      link.click();
+
+      window.setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 250);
+    };
+
+    const handleNotificationSettings = async () => {
+      if (!("Notification" in window)) {
+        return;
+      }
+
+      if (Notification.permission === "default") {
+        await Notification.requestPermission();
+      }
+    };
+
+    const handleDateModeChange = (mode: "gregorian" | "hijri") => {
+      setDateMode(mode);
+      window.localStorage.setItem("balady-date-mode", mode);
+      setSettingsOpen(false);
+    };
+
+    const handleSettingsAction = async (item: BaladySettingsItem) => {
+      if (item.action === "print") {
+        window.print();
+        setSettingsOpen(false);
+        return;
+      }
+
+      if (item.action === "save-page") {
+        handleSavePage();
+        setSettingsOpen(false);
+        return;
+      }
+
+      if (item.action === "notification-settings") {
+        await handleNotificationSettings();
+        setSettingsOpen(false);
+        return;
+      }
+
+      if (item.action === "gregorian") {
+        handleDateModeChange("gregorian");
+        return;
+      }
+
+      handleDateModeChange("hijri");
     };
 
     const toggleMobileMenu = () => {
@@ -389,6 +506,7 @@
 
         return !current;
       });
+      setSettingsOpen(false);
     };
 
     const toggleMobileSection = (itemId: string) => {
@@ -405,7 +523,7 @@
             <div className="balady-nav-shell balady-gov-strip-inner">
               {/* Mobile: flag row (hidden on desktop) */}
               <div className="balady-gov-flag-row">
-                <span aria-label="Saudi Arabia flag">🇸🇦</span>
+                <span className="balady-gov-flag-mark" aria-hidden="true" />
               </div>
 
               <div className="balady-gov-message">
@@ -434,13 +552,64 @@
                 <span>كيف تتحقق</span>
               </button>
 
-              <div className="balady-gov-tools">
-                {BALADY_TOP_TOOLS.map((tool) => (
-                  <a key={tool.id} href={tool.href} className="balady-tool-link" {...getAnchorProps(tool.href)}>
-                    {renderTopToolIcon(tool)}
-                    <span>{tool.label}</span>
-                  </a>
-                ))}
+              <div className="balady-gov-controls">
+                <div className="balady-gov-tools">
+                  {BALADY_TOP_TOOLS.map((tool) =>
+                    tool.id === "settings" ? (
+                      <div key={tool.id} className="balady-settings-menu-wrap">
+                        <button
+                          type="button"
+                          className={`balady-tool-link balady-tool-link-${tool.id} balady-settings-trigger ${
+                            settingsOpen ? "active" : ""
+                          }`}
+                          onClick={toggleSettingsMenu}
+                          aria-expanded={settingsOpen}
+                          aria-controls="balady-settings-menu"
+                        >
+                          {renderTopToolIcon(tool)}
+                          <p className="upper-txt">{tool.label}</p>
+                        </button>
+
+                        {settingsOpen ? (
+                          <div id="balady-settings-menu" className="balady-settings-menu" role="menu">
+                            {BALADY_SETTINGS_MENU.map((item) => {
+                              const isActiveDateMode =
+                                (item.action === "gregorian" && dateMode === "gregorian") ||
+                                (item.action === "hijri" && dateMode === "hijri");
+
+                              return (
+                                <button
+                                  key={item.id}
+                                  type="button"
+                                  className={`balady-settings-item ${isActiveDateMode ? "active" : ""}`}
+                                  onClick={() => {
+                                    void handleSettingsAction(item);
+                                  }}
+                                  role="menuitem"
+                                >
+                                  {renderSettingsIcon(item)}
+                                  <span className="balady-settings-item-label">{item.label}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <a
+                        key={tool.id}
+                        href={tool.href}
+                        className={`balady-tool-link balady-tool-link-${tool.id}`}
+                        {...getAnchorProps(tool.href)}
+                      >
+                        {renderTopToolIcon(tool)}
+                        <p className={tool.id === "accessibility" ? "upper-txt" : undefined}>
+                          {tool.label}
+                        </p>
+                      </a>
+                    ),
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -452,18 +621,20 @@
                     <div key={card.id} className="balady-verify-item">
                       <div className="balady-verify-card-visual">{renderVerifyIcon(card)}</div>
                       <div className="balady-verify-card-copy">
-                        <h3>{card.title}</h3>
-                        <p>{card.description}</p>
+                        <h3>{renderVerifyTitle(card)}</h3>
+                        <p>{renderVerifyDescription(card)}</p>
                       </div>
                     </div>
                   ))}
                 </div>
                 <div className="balady-verify-badge">
-                  <span>{BALADY_VERIFY_BADGE.label}</span>
                   <a href={BALADY_VERIFY_LINK} className="balady-verify-code" {...getAnchorProps(BALADY_VERIFY_LINK)}>
                     <ExternalLinkIcon />
                     <span>{BALADY_VERIFY_BADGE.value}</span>
                   </a>
+                  <div className="balady-verify-badge-copy">
+                    <span>{BALADY_VERIFY_BADGE.label}</span>
+                  </div>
                   <div className="balady-verify-badge-mark">
                     <DigitalBadgeIcon />
                   </div>

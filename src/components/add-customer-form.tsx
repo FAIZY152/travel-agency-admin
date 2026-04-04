@@ -104,10 +104,6 @@ export function AddCustomerForm({
           <label htmlFor="eduProgramEnd" className="field-label">Educational program end date (Hijri)</label>
           <input id="eduProgramEnd" name="eduProgramEnd" className="field-input" placeholder="Educational program end date (Hijri)" />
         </div>
-        <div>
-          <label htmlFor="eduProgramEndGregorian" className="field-label">Educational program end date (Gregorian)</label>
-          <input id="eduProgramEndGregorian" name="eduProgramEndGregorian" className="field-input" placeholder="Educational program end date (Gregorian)" />
-        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

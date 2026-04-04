@@ -12,6 +12,7 @@ import {
 
 const OUTPUT_IMAGE_TYPE = "image/jpeg";
 const PREVIEW_IMAGE_WIDTH = 320;
+const PREVIEW_IMAGE_HEIGHT = 320;
 const JPEG_QUALITY_STEPS = [0.82, 0.72, 0.62, 0.52, 0.45];
 
 type Props = {
@@ -113,6 +114,9 @@ export function CustomerImageUpload({
   const [error, setError] = useState("");
   const previewImageUrl = buildCloudinaryImageUrl(imageUrl, {
     width: PREVIEW_IMAGE_WIDTH,
+    height: PREVIEW_IMAGE_HEIGHT,
+    crop: "fill",
+    gravity: "auto",
   });
 
   const setUploadingState = (val: boolean) => {
@@ -181,14 +185,16 @@ export function CustomerImageUpload({
       {error ? <p className="text-xs font-semibold text-red-600">{error}</p> : null}
 
       {imageUrl ? (
-        <div className="overflow-hidden rounded-[22px] border border-slate-200 bg-slate-50 p-2">
-          <Image
-            src={previewImageUrl}
-            alt="Customer preview"
-            width={PREVIEW_IMAGE_WIDTH}
-            height={PREVIEW_IMAGE_WIDTH}
-            className="h-44 w-full rounded-[18px] object-cover"
-          />
+        <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-3">
+          <div className="mx-auto aspect-square w-full max-w-[220px] overflow-hidden bg-slate-100">
+            <Image
+              src={previewImageUrl}
+              alt="Customer preview"
+              width={PREVIEW_IMAGE_WIDTH}
+              height={PREVIEW_IMAGE_HEIGHT}
+              className="h-full w-full object-cover object-top"
+            />
+          </div>
         </div>
       ) : (
         <p className="text-xs text-muted">Upload JPG/PNG/WEBP up to 10MB. We resize and compress it before upload.</p>

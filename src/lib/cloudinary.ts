@@ -7,6 +7,8 @@ export const CUSTOMER_IMAGE_SOURCE_LIMIT_BYTES = 10 * 1024 * 1024;
 type DeliveryOptions = {
   width: number;
   height?: number;
+  crop?: "limit" | "fill";
+  gravity?: "auto" | "center" | "face";
 };
 
 export function buildCloudinaryImageUrl(
@@ -32,12 +34,16 @@ export function buildCloudinaryImageUrl(
   const transforms = [
     "f_auto",
     "q_auto:eco",
-    "c_limit",
+    options.crop === "fill" ? "c_fill" : "c_limit",
     `w_${options.width}`,
   ];
 
   if (options.height) {
     transforms.push(`h_${options.height}`);
+  }
+
+  if (options.crop === "fill" && options.gravity) {
+    transforms.push(`g_${options.gravity}`);
   }
 
   return `${uploadPrefix}${transforms.join(",")}/${uploadSuffix}`;

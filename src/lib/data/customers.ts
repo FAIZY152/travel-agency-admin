@@ -30,7 +30,6 @@ export type CustomerListItem = {
   healthCertIssueHijri: string | null;
   healthCertIssueGregorian: string | null;
   eduProgramEnd: string | null;
-  eduProgramEndGregorian: string | null;
   eduProgramType: string | null;
   facilityName: string | null;
   licenseNumber: string | null;
@@ -60,7 +59,6 @@ const customerInputSchema = z.object({
   healthCertIssueHijri: z.string().trim().max(60).optional(),
   healthCertIssueGregorian: z.string().trim().max(60).optional(),
   eduProgramEnd: z.string().trim().max(60).optional(),
-  eduProgramEndGregorian: z.string().trim().max(60).optional(),
   eduProgramType: z.string().trim().max(120).optional(),
   facilityName: z.string().trim().max(200).optional(),
   licenseNumber: z.string().trim().max(60).optional(),
@@ -98,7 +96,6 @@ function sanitizeCustomerRow(
     healthCertIssueHijri: row.health_cert_issue_hijri || null,
     healthCertIssueGregorian: row.health_cert_issue_gregorian || null,
     eduProgramEnd: row.edu_program_end || null,
-    eduProgramEndGregorian: row.edu_program_end_gregorian || null,
     eduProgramType: row.edu_program_type || null,
     facilityName: row.facility_name || null,
     licenseNumber: row.license_number || null,
@@ -107,7 +104,7 @@ function sanitizeCustomerRow(
 }
 
 const CUSTOMERS_COLS =
-  "id, company_id, name, name_ar, passport, job_title, job_title_ar, image_url, created_at, municipal, honesty, id_number, nationality, sex, occupation, health_cert_number, health_cert_expiry_hijri, health_cert_expiry, health_cert_issue_hijri, health_cert_issue_gregorian, edu_program_end, edu_program_end_gregorian, edu_program_type, facility_name, license_number, facility_number";
+  "id, company_id, name, name_ar, passport, job_title, job_title_ar, image_url, created_at, municipal, honesty, id_number, nationality, sex, occupation, health_cert_number, health_cert_expiry_hijri, health_cert_expiry, health_cert_issue_hijri, health_cert_issue_gregorian, edu_program_end, edu_program_type, facility_name, license_number, facility_number";
 
 async function loadCompaniesById() {
   const supabase = getSupabaseAdminClient();
@@ -265,7 +262,6 @@ export async function createCustomer(input: CustomerInput) {
       health_cert_issue_hijri: payload.healthCertIssueHijri || null,
       health_cert_issue_gregorian: payload.healthCertIssueGregorian || null,
       edu_program_end: payload.eduProgramEnd || null,
-      edu_program_end_gregorian: payload.eduProgramEndGregorian || null,
       edu_program_type: payload.eduProgramType || null,
       facility_name: payload.facilityName || null,
       license_number: payload.licenseNumber || null,
@@ -335,7 +331,6 @@ export async function updateCustomer(customerId: string, input: CustomerInput) {
         health_cert_issue_hijri: payload.healthCertIssueHijri || null,
         health_cert_issue_gregorian: payload.healthCertIssueGregorian || null,
         edu_program_end: payload.eduProgramEnd || null,
-        edu_program_end_gregorian: payload.eduProgramEndGregorian || null,
         edu_program_type: payload.eduProgramType || null,
         facility_name: payload.facilityName || null,
         license_number: payload.licenseNumber || null,

@@ -8,6 +8,13 @@ export type BaladyTopTool = BaladyLink & {
   icon: "gear" | "access";
 };
 
+export type BaladySettingsItem = {
+  id: string;
+  label: string;
+  icon: "print" | "bookmark" | "notifications" | "calendar";
+  action: "print" | "save-page" | "notification-settings" | "gregorian" | "hijri";
+};
+
 export type BaladyVerifyCard = {
   id: string;
   title: string;
@@ -57,7 +64,7 @@ export const BALADY_TOP_TOOLS: BaladyTopTool[] = [
   {
     id: "settings",
     label: "الإعدادات",
-    href: "#",
+    href: "",
     icon: "gear",
   },
 
@@ -66,6 +73,39 @@ export const BALADY_TOP_TOOLS: BaladyTopTool[] = [
     label: "أدوات سهولة الوصول",
     href: "#",
     icon: "access",
+  },
+];
+
+export const BALADY_SETTINGS_MENU: BaladySettingsItem[] = [
+  {
+    id: "print",
+    label: "الطباعة",
+    icon: "print",
+    action: "print",
+  },
+  {
+    id: "save-page",
+    label: "حفظ الصفحة",
+    icon: "bookmark",
+    action: "save-page",
+  },
+  {
+    id: "notification-settings",
+    label: "ضبط إعدادات الإشعارات",
+    icon: "notifications",
+    action: "notification-settings",
+  },
+  {
+    id: "gregorian",
+    label: "استخدام التاريخ الجريجري",
+    icon: "calendar",
+    action: "gregorian",
+  },
+  {
+    id: "hijri",
+    label: "استخدام التاريخ البلدي",
+    icon: "calendar",
+    action: "hijri",
   },
 ];
 

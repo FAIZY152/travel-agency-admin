@@ -28,7 +28,6 @@ create table if not exists public.customers (
   health_cert_issue_hijri text,
   health_cert_issue_gregorian text,
   edu_program_end text,
-  edu_program_end_gregorian text,
   edu_program_type text,
   facility_name text,
   license_number text,

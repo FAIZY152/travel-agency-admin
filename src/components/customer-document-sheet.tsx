@@ -17,6 +17,11 @@ type FieldItem = {
   value?: string | null;
 };
 
+const DOCUMENT_PHOTO_SIZE = 200;
+const DOCUMENT_PHOTO_SIZE_MOBILE = 168;
+const EMPTY_IMAGE_DATA_URL =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+
 function FieldCard({ label, value }: FieldItem) {
   return (
     <div className="doc-field">
@@ -27,6 +32,16 @@ function FieldCard({ label, value }: FieldItem) {
 }
 
 export function CustomerDocumentSheet({ customer }: Props) {
+  const hasCustomerImage =
+    Boolean(customer.imageUrl) && customer.imageUrl !== EMPTY_IMAGE_DATA_URL;
+  const documentImageUrl = hasCustomerImage
+    ? buildCloudinaryImageUrl(customer.imageUrl, {
+        width: DOCUMENT_PHOTO_SIZE,
+        height: DOCUMENT_PHOTO_SIZE,
+        crop: "fill",
+        gravity: "auto",
+      })
+    : "";
   const documentRows: Array<{
     right?: FieldItem;
     left?: FieldItem;
@@ -74,7 +89,7 @@ export function CustomerDocumentSheet({ customer }: Props) {
       },
       left: {
         label: "تاريخ انتهاء البرنامج التثقيفي",
-        value: customer.eduProgramEnd || customer.eduProgramEndGregorian,
+        value: customer.eduProgramEnd,
       },
     },
     {
@@ -91,55 +106,79 @@ export function CustomerDocumentSheet({ customer }: Props) {
       <style>{`
         .doc-root {
           direction: rtl;
-          width: min(100%, 1128px);
+          width: min(100%, 1100px);
           margin: 0 auto;
-          padding: 28px 26px 48px;
-          border-top: 1px solid #dfe4ea;
+          padding: 20px 28px 48px;
           background: #ffffff;
           color: #334155;
           font-family: ${ibmPlexSansArabic.style.fontFamily}, 'Segoe UI', Arial, sans-serif;
           font-weight: 700;
         }
 
+        .doc-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 18px;
+          margin-bottom: 28px;
+        }
+
         .doc-title {
-          margin: 8px 0 22px;
+          margin: 0;
           text-align: center;
-          font-size: 48px;
+          font-size: clamp(40px, 4.5vw, 54px);
           font-weight: 700;
-          color: #5f6c77;
-          line-height: 1.15;
+          color: #55657b;
+          line-height: 1.12;
         }
 
         .doc-photo-wrap {
           display: flex;
           justify-content: center;
-          margin-bottom: 16px;
+          width: 100%;
         }
 
         .doc-photo {
-          width: 158px;
-          height: 158px;
+          width: ${DOCUMENT_PHOTO_SIZE}px;
+          height: ${DOCUMENT_PHOTO_SIZE}px;
           display: flex;
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          padding: 6px;
-          border: 1px solid #c5ced8;
-          background: #f8fafc;
+          background: #eef2f6;
         }
 
-        .doc-photo img {
+        .doc-photo-frame {
           width: 100%;
           height: 100%;
-          object-fit: contain;
-          object-position: center;
+          overflow: hidden;
+          background: #eef2f6;
+        }
+
+        .doc-photo img,
+        .doc-photo-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center top;
           display: block;
+        }
+
+        .doc-photo-placeholder {
+          display: flex;
+          height: 100%;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+          color: #94a3b8;
+          font-size: 18px;
+          background: #eef2f6;
         }
 
         .doc-grid {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 14px;
         }
 
         .doc-row {
@@ -159,26 +198,26 @@ export function CustomerDocumentSheet({ customer }: Props) {
         .doc-field {
           display: flex;
           flex-direction: column;
-          gap: 7px;
+          gap: 8px;
         }
 
         .doc-label {
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 700;
-          color: #334155;
+          color: #4d5b68;
           text-align: right;
           line-height: 1.35;
         }
 
         .doc-value {
-          min-height: 43px;
-          border: 1px solid #c5ced8;
+          min-height: 46px;
+          border: 1px solid #c6d1db;
           border-radius: 2px;
-          background: #fdfefe;
-          padding: 8px 12px;
+          background: #fcfeff;
+          padding: 10px 14px;
           font-size: 15px;
           font-weight: 700;
-          color: #7b8794;
+          color: #6b7785;
           text-align: right;
           display: flex;
           align-items: center;
@@ -190,18 +229,21 @@ export function CustomerDocumentSheet({ customer }: Props) {
         @media (max-width: 640px) {
           .doc-root {
             width: 100%;
-            padding: 10px 12px 20px;
+            padding: 14px 12px 24px;
+          }
+
+          .doc-header {
+            gap: 14px;
+            margin-bottom: 22px;
           }
 
           .doc-title {
-            margin-top: 8px;
-            margin-bottom: 16px;
-            font-size: 33px;
+            font-size: 28px;
           }
 
           .doc-photo {
-            width: 128px;
-            height: 128px;
+            width: ${DOCUMENT_PHOTO_SIZE_MOBILE}px;
+            height: ${DOCUMENT_PHOTO_SIZE_MOBILE}px;
           }
 
           .doc-grid {
@@ -243,24 +285,32 @@ export function CustomerDocumentSheet({ customer }: Props) {
           .doc-root {
             width: 100%;
             padding: 0;
-            border-top: 0;
           }
         }
       `}</style>
 
       <article className={`${ibmPlexSansArabic.className} doc-root`}>
-        <h1 className="doc-title">شهادة صحية</h1>
+        <div className="doc-header">
+          <h1 className="doc-title">شهادة صحية</h1>
 
-        <div className="doc-photo-wrap">
-          <div className="doc-photo">
-            <Image
-              src={buildCloudinaryImageUrl(customer.imageUrl, { width: 160 })}
-              alt={customer.name}
-              width={160}
-              height={160}
-              priority
-              sizes="(max-width: 640px) 128px, 158px"
-            />
+          <div className="doc-photo-wrap">
+            <div className="doc-photo">
+              <div className="doc-photo-frame">
+                {hasCustomerImage ? (
+                  <Image
+                    src={documentImageUrl}
+                    alt={customer.name}
+                    width={DOCUMENT_PHOTO_SIZE}
+                    height={DOCUMENT_PHOTO_SIZE}
+                    priority
+                    sizes={`(max-width: 640px) ${DOCUMENT_PHOTO_SIZE_MOBILE}px, ${DOCUMENT_PHOTO_SIZE}px`}
+                    className="doc-photo-image"
+                  />
+                ) : (
+                  <div className="doc-photo-placeholder">الصورة</div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

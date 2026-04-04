@@ -50,7 +50,6 @@ export type Database = {
           health_cert_issue_hijri: string | null;
           health_cert_issue_gregorian: string | null;
           edu_program_end: string | null;
-          edu_program_end_gregorian: string | null;
           edu_program_type: string | null;
           facility_name: string | null;
           license_number: string | null;
@@ -78,7 +77,6 @@ export type Database = {
           health_cert_issue_hijri?: string | null;
           health_cert_issue_gregorian?: string | null;
           edu_program_end?: string | null;
-          edu_program_end_gregorian?: string | null;
           edu_program_type?: string | null;
           facility_name?: string | null;
           license_number?: string | null;
@@ -106,7 +104,6 @@ export type Database = {
           health_cert_issue_hijri?: string | null;
           health_cert_issue_gregorian?: string | null;
           edu_program_end?: string | null;
-          edu_program_end_gregorian?: string | null;
           edu_program_type?: string | null;
           facility_name?: string | null;
           license_number?: string | null;
