@@ -214,7 +214,7 @@ export function CustomerDocumentSheet({ customer }: Props) {
           min-height: 46px;
           border: 1px solid #c6d1db;
           border-radius: 2px;
-          background: #fcfeff;
+          background: #f2f2f2;
           padding: 10px 14px;
           font-size: 15px;
           font-weight: 700;
