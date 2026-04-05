@@ -212,11 +212,12 @@ export function CustomerDocumentSheet({ customer }: Props) {
 
         .doc-value {
           min-height: 46px;
-          border: 1px solid #c6d1db;
+          border: 1px solid #9DA4AE;
           border-radius: 2px;
           background: #f2f2f2;
-          padding: 10px 14px;
+          padding: 8px 12px;
           font-size: 15px;
+          border-radius: 4px;
           font-weight: 700;
           color: #6b7785;
           text-align: right;
