@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { buildCloudinaryImageUrl } from "@/lib/cloudinary";
+import type { CustomerListItem } from "@/lib/customers/shared";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
-import type { CustomerListItem } from "@/lib/data/customers";
 
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
