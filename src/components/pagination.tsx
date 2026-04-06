@@ -20,6 +20,8 @@ export function Pagination({
 }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   if (totalPages <= 1) return null;
+  const startRecord = total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const endRecord = Math.min(total, page * pageSize);
 
   const prev = page > 1 ? page - 1 : null;
   const next = page < totalPages ? page + 1 : null;
@@ -60,9 +62,9 @@ export function Pagination({
   }
 
   return (
-    <div className="mt-5 flex items-center justify-between gap-3">
+    <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
       <p className="text-xs text-slate-400">
-        Page {page} of {totalPages} · {total} total
+        Showing {startRecord}-{endRecord} of {total} customers · Page {page} of {totalPages}
       </p>
       <div className="flex items-center gap-1.5">
         {prev ? (

@@ -1,43 +1,16 @@
 import "server-only";
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
+import {
+  CUSTOMERS_PAGE_SIZE,
+  EMPTY_CUSTOMER_IMAGE_DATA_URL,
+  type CustomerListItem,
+} from "@/lib/customers/shared";
 import { getSupabaseAdminClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
 
 type CustomerRow = Database["public"]["Tables"]["customers"]["Row"];
 type CompanyRow = Database["public"]["Tables"]["companies"]["Row"];
-
-export type CustomerListItem = {
-  id: string;
-  companyId: string | null;
-  companyName: string;
-  name: string;
-  nameAr: string | null;
-  passport: string;
-  jobTitle: string;
-  jobTitleAr: string | null;
-  imageUrl: string;
-  createdAt: string;
-  municipal: string | null;
-  honesty: string | null;
-  idNumber: string | null;
-  nationality: string | null;
-  sex: string | null;
-  occupation: string | null;
-  healthCertNumber: string | null;
-  healthCertExpiryHijri: string | null;
-  healthCertExpiry: string | null;
-  healthCertIssueHijri: string | null;
-  healthCertIssueGregorian: string | null;
-  eduProgramEnd: string | null;
-  eduProgramType: string | null;
-  facilityName: string | null;
-  licenseNumber: string | null;
-  facilityNumber: string | null;
-};
-
-const EMPTY_IMAGE_DATA_URL =
-  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 
 const customerInputSchema = z.object({
   companyId: z.string().trim().optional().default(""),
@@ -82,7 +55,7 @@ function sanitizeCustomerRow(
     passport: row.passport || "",
     jobTitle: row.job_title || "",
     jobTitleAr: row.job_title_ar || null,
-    imageUrl: row.image_url || EMPTY_IMAGE_DATA_URL,
+    imageUrl: row.image_url || EMPTY_CUSTOMER_IMAGE_DATA_URL,
     createdAt: row.created_at,
     municipal: row.municipal || null,
     honesty: row.honesty || null,
@@ -106,26 +79,37 @@ function sanitizeCustomerRow(
 const CUSTOMERS_COLS =
   "id, company_id, name, name_ar, passport, job_title, job_title_ar, image_url, created_at, municipal, honesty, id_number, nationality, sex, occupation, health_cert_number, health_cert_expiry_hijri, health_cert_expiry, health_cert_issue_hijri, health_cert_issue_gregorian, edu_program_end, edu_program_type, facility_name, license_number, facility_number";
 
-async function loadCompaniesById() {
-  const supabase = getSupabaseAdminClient();
-  const { data, error } = await supabase
-    .from("companies")
-    .select("id, name, created_at");
-
-  if (error) {
-    return { companiesById: new Map<string, CompanyRow>(), error: true };
+function normalizePage(value: number) {
+  if (!Number.isFinite(value) || value < 1) {
+    return 1;
   }
 
-  return {
-    companiesById: new Map((data ?? []).map((company) => [company.id, company])),
-    error: false,
-  };
+  return Math.floor(value);
 }
 
-async function loadCompanyById(companyId: string | null) {
-  if (!companyId) {
+function normalizePageSize(value: number) {
+  if (!Number.isFinite(value) || value < 1) {
+    return CUSTOMERS_PAGE_SIZE;
+  }
+
+  return Math.min(100, Math.floor(value));
+}
+
+function buildCustomerSearchFilter(query: string) {
+  const normalizedQuery = query.trim();
+  return `name.ilike.%${normalizedQuery}%,id_number.ilike.%${normalizedQuery}%,nationality.ilike.%${normalizedQuery}%`;
+}
+
+async function loadCompaniesByIds(companyIds: Array<string | null>) {
+  const normalizedIds = Array.from(
+    new Set(
+      companyIds.filter((companyId): companyId is string => Boolean(companyId)),
+    ),
+  );
+
+  if (normalizedIds.length === 0) {
     return {
-      company: null as CompanyRow | null,
+      companiesById: new Map<string, CompanyRow>(),
       error: false,
     };
   }
@@ -134,13 +118,51 @@ async function loadCompanyById(companyId: string | null) {
   const { data, error } = await supabase
     .from("companies")
     .select("id, name, created_at")
-    .eq("id", companyId)
-    .maybeSingle();
+    .in("id", normalizedIds);
+
+  if (error) {
+    return {
+      companiesById: new Map<string, CompanyRow>(),
+      error: true,
+    };
+  }
 
   return {
-    company: error ? null : data,
-    error: Boolean(error),
+    companiesById: new Map((data ?? []).map((company) => [company.id, company])),
+    error: false,
   };
+}
+
+function sanitizeCustomerRows(
+  rows: CustomerRow[],
+  companiesById: Map<string, CompanyRow>,
+) {
+  return rows
+    .map((row) => sanitizeCustomerRow(row, companiesById))
+    .filter((row): row is CustomerListItem => Boolean(row));
+}
+
+async function fetchCustomersPage(
+  page: number,
+  pageSize: number,
+  query: string,
+) {
+  const supabase = getSupabaseAdminClient();
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+  const normalizedQuery = query.trim();
+
+  const request = supabase
+    .from("customers")
+    .select(CUSTOMERS_COLS, { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(from, to);
+
+  if (!normalizedQuery) {
+    return request;
+  }
+
+  return request.or(buildCustomerSearchFilter(normalizedQuery));
 }
 
 export async function listCustomers() {
@@ -148,24 +170,33 @@ export async function listCustomers() {
 
   try {
     const supabase = getSupabaseAdminClient();
-    const [customersResult, companiesResult] = await Promise.all([
-      supabase
-        .from("customers")
-        .select(CUSTOMERS_COLS)
-        .order("created_at", { ascending: false }),
-      loadCompaniesById(),
-    ]);
+    const customersResult = await supabase
+      .from("customers")
+      .select(CUSTOMERS_COLS)
+      .order("created_at", { ascending: false });
 
-    if (customersResult.error || companiesResult.error) {
+    if (customersResult.error) {
       return {
         customers: [] as CustomerListItem[],
         error: "Could not load customers from database.",
       };
     }
 
-    const normalizedCustomers = (customersResult.data ?? [])
-      .map((row) => sanitizeCustomerRow(row, companiesResult.companiesById))
-      .filter((row): row is CustomerListItem => Boolean(row));
+    const companiesResult = await loadCompaniesByIds(
+      (customersResult.data ?? []).map((row) => row.company_id),
+    );
+
+    if (companiesResult.error) {
+      return {
+        customers: [] as CustomerListItem[],
+        error: "Could not load customers from database.",
+      };
+    }
+
+    const normalizedCustomers = sanitizeCustomerRows(
+      customersResult.data ?? [],
+      companiesResult.companiesById,
+    );
 
     return {
       customers: normalizedCustomers,
@@ -183,47 +214,86 @@ export async function listCustomersPaginated(page: number, pageSize: number, que
   noStore();
 
   try {
-    const supabase = getSupabaseAdminClient();
-    const from = (page - 1) * pageSize;
-    const to = from + pageSize - 1;
+    const requestedPage = normalizePage(page);
+    const normalizedPageSize = normalizePageSize(pageSize);
+    const normalizedQuery = query.trim();
 
-    const [customersResult, companiesResult] = await Promise.all([
-      query
-        ? supabase
-            .from("customers")
-            .select(CUSTOMERS_COLS, { count: "exact" })
-            .or(`name.ilike.%${query}%,id_number.ilike.%${query}%,nationality.ilike.%${query}%`)
-            .order("created_at", { ascending: false })
-            .range(from, to)
-        : supabase
-            .from("customers")
-            .select(CUSTOMERS_COLS, { count: "exact" })
-            .order("created_at", { ascending: false })
-            .range(from, to),
-      loadCompaniesById(),
-    ]);
+    let customersResult = await fetchCustomersPage(
+      requestedPage,
+      normalizedPageSize,
+      normalizedQuery,
+    );
 
-    if (customersResult.error || companiesResult.error) {
+    if (customersResult.error) {
       return {
         customers: [] as CustomerListItem[],
         total: 0,
+        totalPages: 1,
+        page: 1,
+        pageSize: normalizedPageSize,
         error: "Could not load customers from database.",
       };
     }
 
-    const customers = (customersResult.data ?? [])
-      .map((row) => sanitizeCustomerRow(row, companiesResult.companiesById))
-      .filter((row): row is CustomerListItem => Boolean(row));
+    const total = customersResult.count ?? 0;
+    const totalPages =
+      total === 0 ? 1 : Math.max(1, Math.ceil(total / normalizedPageSize));
+    const currentPage = Math.min(requestedPage, totalPages);
+
+    if (currentPage !== requestedPage) {
+      customersResult = await fetchCustomersPage(
+        currentPage,
+        normalizedPageSize,
+        normalizedQuery,
+      );
+
+      if (customersResult.error) {
+        return {
+          customers: [] as CustomerListItem[],
+          total: 0,
+          totalPages: 1,
+          page: 1,
+          pageSize: normalizedPageSize,
+          error: "Could not load customers from database.",
+        };
+      }
+    }
+
+    const companiesResult = await loadCompaniesByIds(
+      (customersResult.data ?? []).map((row) => row.company_id),
+    );
+
+    if (companiesResult.error) {
+      return {
+        customers: [] as CustomerListItem[],
+        total: 0,
+        totalPages: 1,
+        page: 1,
+        pageSize: normalizedPageSize,
+        error: "Could not load customers from database.",
+      };
+    }
+
+    const customers = sanitizeCustomerRows(
+      customersResult.data ?? [],
+      companiesResult.companiesById,
+    );
 
     return {
       customers,
-      total: customersResult.count ?? 0,
+      total,
+      totalPages,
+      page: currentPage,
+      pageSize: normalizedPageSize,
       error: "",
     };
   } catch {
     return {
       customers: [] as CustomerListItem[],
       total: 0,
+      totalPages: 1,
+      page: 1,
+      pageSize: normalizePageSize(pageSize),
       error: "Database is not configured. Add Supabase env values.",
     };
   }
@@ -393,6 +463,12 @@ export async function deleteCustomer(customerId: string) {
 export async function getCustomerDocumentById(customerId: string) {
   noStore();
 
+  return getCustomerById(customerId);
+}
+
+export async function getCustomerById(customerId: string) {
+  noStore();
+
   const idCheck = z.string().uuid("Invalid customer id.").safeParse(customerId);
 
   if (!idCheck.success) {
@@ -417,9 +493,9 @@ export async function getCustomerDocumentById(customerId: string) {
       };
     }
 
-    const companyResult = await loadCompanyById(customer.company_id);
+    const companiesResult = await loadCompaniesByIds([customer.company_id]);
 
-    if (companyResult.error) {
+    if (companiesResult.error) {
       return {
         customer: null as CustomerListItem | null,
         error: "Could not load company details.",
@@ -428,7 +504,7 @@ export async function getCustomerDocumentById(customerId: string) {
 
     const normalizedCustomer = sanitizeCustomerRow(
       customer,
-      new Map(companyResult.company ? [[companyResult.company.id, companyResult.company]] : []),
+      companiesResult.companiesById,
     );
 
     if (!normalizedCustomer) {

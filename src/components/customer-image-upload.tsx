@@ -6,6 +6,9 @@ import type { ChangeEvent } from "react";
 import {
   buildCloudinaryImageUrl,
   CUSTOMER_IMAGE_MAX_EDGE_PX,
+  CUSTOMER_IMAGE_MIN_EDGE_PX,
+  CUSTOMER_IMAGE_UPLOAD_MAX_BYTES,
+  CUSTOMER_IMAGE_UPLOAD_MIN_BYTES,
   CUSTOMER_IMAGE_SOURCE_LIMIT_BYTES,
   CUSTOMER_IMAGE_UPLOAD_TARGET_BYTES,
 } from "@/lib/cloudinary";
@@ -13,7 +16,8 @@ import {
 const OUTPUT_IMAGE_TYPE = "image/jpeg";
 const PREVIEW_IMAGE_WIDTH = 320;
 const PREVIEW_IMAGE_HEIGHT = 320;
-const JPEG_QUALITY_STEPS = [0.82, 0.72, 0.62, 0.52, 0.45];
+const JPEG_QUALITY_STEPS = [0.62, 0.5, 0.38, 0.28, 0.2, 0.14];
+const EDGE_REDUCTION_RATIO = 0.82;
 
 type Props = {
   inputName: string;
@@ -67,38 +71,93 @@ function canvasToBlob(
 async function optimizeImageForUpload(file: File) {
   const image = await loadImage(file);
   const longestEdge = Math.max(image.naturalWidth, image.naturalHeight) || 1;
-  const scale = Math.min(1, CUSTOMER_IMAGE_MAX_EDGE_PX / longestEdge);
-  const width = Math.max(1, Math.round(image.naturalWidth * scale));
-  const height = Math.max(1, Math.round(image.naturalHeight * scale));
-  const canvas = document.createElement("canvas");
+  let maxEdge = Math.min(CUSTOMER_IMAGE_MAX_EDGE_PX, longestEdge);
+  let fallbackBlob: Blob | null = null;
+  let smallestBlob: Blob | null = null;
 
-  canvas.width = width;
-  canvas.height = height;
+  while (maxEdge >= CUSTOMER_IMAGE_MIN_EDGE_PX) {
+    const scale = Math.min(1, maxEdge / longestEdge);
+    const width = Math.max(1, Math.round(image.naturalWidth * scale));
+    const height = Math.max(1, Math.round(image.naturalHeight * scale));
+    const canvas = document.createElement("canvas");
 
-  const context = canvas.getContext("2d");
-  if (!context) {
-    throw new Error("Image optimization is not available in this browser.");
-  }
+    canvas.width = width;
+    canvas.height = height;
 
-  // Photos are stored as JPEG to keep uploads predictable and small.
-  context.fillStyle = "#ffffff";
-  context.fillRect(0, 0, width, height);
-  context.drawImage(image, 0, 0, width, height);
+    const context = canvas.getContext("2d");
+    if (!context) {
+      throw new Error("Image optimization is not available in this browser.");
+    }
 
-  let optimizedBlob: Blob | null = null;
+    // Photos are stored as JPEG to keep uploads predictable and small.
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, width, height);
+    context.drawImage(image, 0, 0, width, height);
 
-  for (const quality of JPEG_QUALITY_STEPS) {
-    optimizedBlob = await canvasToBlob(canvas, quality);
-    if (optimizedBlob.size <= CUSTOMER_IMAGE_UPLOAD_TARGET_BYTES) {
+    let closestBlob: Blob | null = null;
+    let closestDistance = Number.POSITIVE_INFINITY;
+    let bestUnderMaxBlob: Blob | null = null;
+
+    for (const quality of JPEG_QUALITY_STEPS) {
+      const candidateBlob = await canvasToBlob(canvas, quality);
+      const candidateDistance = Math.abs(
+        candidateBlob.size - CUSTOMER_IMAGE_UPLOAD_TARGET_BYTES,
+      );
+
+      if (!smallestBlob || candidateBlob.size < smallestBlob.size) {
+        smallestBlob = candidateBlob;
+      }
+
+      if (candidateDistance < closestDistance) {
+        closestBlob = candidateBlob;
+        closestDistance = candidateDistance;
+      }
+
+      if (
+        candidateBlob.size >= CUSTOMER_IMAGE_UPLOAD_MIN_BYTES &&
+        candidateBlob.size <= CUSTOMER_IMAGE_UPLOAD_MAX_BYTES
+      ) {
+        return new File([candidateBlob], getOutputFileName(file.name), {
+          type: OUTPUT_IMAGE_TYPE,
+          lastModified: Date.now(),
+        });
+      }
+
+      if (
+        candidateBlob.size <= CUSTOMER_IMAGE_UPLOAD_MAX_BYTES &&
+        (!bestUnderMaxBlob ||
+          Math.abs(bestUnderMaxBlob.size - CUSTOMER_IMAGE_UPLOAD_TARGET_BYTES) >
+            candidateDistance)
+      ) {
+        bestUnderMaxBlob = candidateBlob;
+      }
+    }
+
+    if (bestUnderMaxBlob) {
+      fallbackBlob = bestUnderMaxBlob;
       break;
     }
+
+    if (closestBlob) {
+      fallbackBlob = closestBlob;
+    }
+
+    if (fallbackBlob && fallbackBlob.size <= CUSTOMER_IMAGE_UPLOAD_MAX_BYTES) {
+      break;
+    }
+
+    maxEdge = Math.floor(maxEdge * EDGE_REDUCTION_RATIO);
   }
 
-  if (!optimizedBlob) {
-    throw new Error("Image optimization failed.");
+  if (!fallbackBlob) {
+    if (!smallestBlob) {
+      throw new Error("Image optimization failed.");
+    }
+
+    fallbackBlob = smallestBlob;
   }
 
-  return new File([optimizedBlob], getOutputFileName(file.name), {
+  return new File([fallbackBlob], getOutputFileName(file.name), {
     type: OUTPUT_IMAGE_TYPE,
     lastModified: Date.now(),
   });
@@ -197,7 +256,7 @@ export function CustomerImageUpload({
           </div>
         </div>
       ) : (
-        <p className="text-xs text-muted">Upload JPG/PNG/WEBP up to 10MB. We resize and compress it before upload.</p>
+        <p className="text-xs text-muted">Upload JPG/PNG/WEBP up to 10MB. We resize and compress it to roughly 15-40 KB before upload.</p>
       )}
     </div>
   );
