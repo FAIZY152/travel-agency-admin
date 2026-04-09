@@ -85,6 +85,11 @@ const nextConfig: NextConfig = {
         source: "/sitemap.xml",
         destination: "/api/sitemap",
       },
+      // Backward-compat: old QR codes/links without /Eservices prefix
+      {
+        source: "/health/issue/printedlicenses/uuid/:id",
+        destination: "/Eservices/health/issue/printedlicenses/uuid/:id",
+      },
     ];
   },
 };

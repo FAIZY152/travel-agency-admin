@@ -25,6 +25,8 @@ function isPublicPath(pathname: string) {
     pathname === "/" ||
     pathname === LOGIN_PATH ||
     pathname.startsWith("/verify") ||
+    pathname.startsWith("/Eservices") ||
+    pathname.startsWith("/health/issue") ||
     pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/uploads")
   );
