@@ -29,23 +29,20 @@ export const metadata: Metadata = {
     title: "إصدار شهادة صحية",
     description: "balady.gov.sa.com",
     url: baseUrl,
-    siteName: "balady.gov.sa.com",
     images: [
       {
-        url: `${baseUrl}/logo-2.png`,
+        url: "https://apps.baladyservices.com/logo-2.png", // ✅ hardcoded working URL
         width: 512,
         height: 512,
       },
     ],
-    locale: "ar_SA",
-    type: "website",
   },
 
   twitter: {
     card: "summary_large_image",
     title: "إصدار شهادة صحية",
     description: "balady.gov.sa.com",
-    images: [`${baseUrl}/logo-2.png`],
+    images: ["https://apps.baladyservices.com/logo-2.png"],
   },
 
   icons: {
