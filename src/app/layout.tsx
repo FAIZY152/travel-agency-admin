@@ -7,11 +7,15 @@ const baseUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
 
-  // ✅ Force exact text in preview
-  title: "إصدار شهادة صحية",
-  description: "balady.gov.sa.com",
+  // ✅ KEEP YOUR ORIGINAL STRUCTURE
+  title: {
+    default: "balady-gov-sa",
+    template: "%s | balady-gov-sa",
+  },
 
-  applicationName: "balady-gov-sa.com",
+  description: "balady-gov-sa",
+
+  applicationName: "balady-gov-sa",
 
   keywords: [
     "travel agency",
@@ -20,7 +24,7 @@ export const metadata: Metadata = {
     "admin dashboard",
   ],
 
-  // ✅ Open Graph (WhatsApp/Facebook)
+  // ✅ ONLY ADD THIS (don’t replace everything)
   openGraph: {
     title: "إصدار شهادة صحية",
     description: "balady.gov.sa.com",
@@ -28,29 +32,25 @@ export const metadata: Metadata = {
     siteName: "balady.gov.sa.com",
     images: [
       {
-        url: `${baseUrl}/logo.png`, // from /public
+        url: `${baseUrl}/logo-2.png`,
         width: 512,
         height: 512,
-        alt: "balady",
       },
     ],
     locale: "ar_SA",
     type: "website",
   },
 
-  // ✅ Twitter fallback
   twitter: {
     card: "summary_large_image",
     title: "إصدار شهادة صحية",
     description: "balady.gov.sa.com",
-    images: [`${baseUrl}/logo.svg`],
+    images: [`${baseUrl}/logo-2.png`],
   },
 
-  // ✅ Favicon (separate from preview)
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/logo.svg",
+    apple: "/logo-2.png",
   },
 };
 
@@ -61,12 +61,12 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="ar"
-      dir="rtl"
+      lang="en" // keep original unless whole app is Arabic
       className="h-full antialiased"
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}
       </body>
     </html>
